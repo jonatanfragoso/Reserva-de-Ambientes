@@ -12,6 +12,7 @@ create table "usuarios" (
 	id serial primary key,
   nome varchar(255) not null,
   email varchar(255) unique not null,
+  senha varchar(100) not null,
   telefone varchar(100) not null,
   matricula varchar(50) not null,
   id_funcao integer not null,
@@ -29,6 +30,7 @@ create table "agendamentos" (
 	id serial primary key,
   hora time not null,
   data_agendamento date not null,
+  situacao varchar(50) not null,
   id_usuario integer not null,
   id_gestor integer not null,
   id_local integer not null,
@@ -36,3 +38,8 @@ create table "agendamentos" (
   foreign key (id_gestor) references gestor (id),
   foreign key (id_local) references locais (id)
 );
+
+situa
+
+
+
