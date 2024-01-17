@@ -28,11 +28,13 @@ create table "locais" (
 
 create table "agendamentos" (
 	id serial primary key,
-  hora time not null,
+  hora_inicio time not null,
+  hora_fim time not null,
   data_agendamento date not null,
+  dia_semana varchar(50),
   situacao varchar(50) not null,
   id_usuario integer not null,
-  id_gestor integer not null,
+  id_gestor integer,
   id_local integer not null,
   foreign key (id_usuario) references usuarios (id),
   foreign key (id_gestor) references gestor (id),

@@ -1,6 +1,37 @@
 const knex = require("../conexao");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
+const senhaJWT = require("../senhaJWT");
+
+const login = async (req, res) => {
+  const { email, senha } = req.body;
+  try {
+    const usuario = await knex("usuarios").where({ email: email }).first();
+    if (!usuario) {
+      return res.status(404).json({ mensagem: "Usuário ou senha inválidos." });
+    }
+
+    const senhaValida = await bcrypt.compare(senha, usuario.senha);
+    if (!senhaValida) {
+      return res.status(404).json({ mensagem: "Usuário ou senha inválidos." });
+    }
+
+    const token = jwt.sign(
+      {
+        id: usuario.id,
+        id_gestor: usuario.id_gestor,
+        id_funcao: usuario.id_funcao,
+      },
+      senhaJWT,
+      { expiresIn: "8h" }
+    );
+    const { senha: _, ...usuarioAutenticado } = usuario;
+
+    return res.status(200).json({ usuario: usuarioAutenticado, token });
+  } catch (error) {
+    return res.status(500).json({ mensagem: "Erro interno do servidor." });
+  }
+};
 
 const listarUsuarios = async (req, res) => {
   try {
@@ -25,6 +56,10 @@ const obterUsuario = async (req, res) => {
   } catch (error) {
     return res.status(500).json({ mensagem: "Erro interno do servidor." });
   }
+};
+
+const obterPerfil = async (req, res) => {
+  return res.status(200).json(req.usuario[0]);
 };
 
 const cadastrarUsuario = async (req, res) => {
@@ -71,7 +106,6 @@ const cadastrarUsuario = async (req, res) => {
 
     return res.status(201).json({ mensagem: "Cadastrado com sucesso." });
   } catch (error) {
-    console.log(error.message);
     return res.status(500).json({ mensagem: "Erro interno do servidor." });
   }
 };
@@ -80,4 +114,6 @@ module.exports = {
   listarUsuarios,
   obterUsuario,
   cadastrarUsuario,
+  login,
+  obterPerfil,
 };
