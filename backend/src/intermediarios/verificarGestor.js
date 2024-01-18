@@ -10,7 +10,9 @@ const verificarGestor = async (req, res, next) => {
     const usuario = await knex("usuarios").where({ id: id }).first();
 
     if (usuario.id_gestor != 1) {
-      return res.status(401).json({ mensagem: "Não autorizado." });
+      return res
+        .status(401)
+        .json({ mensagem: "Não autorizado. Você não é um gestor." });
     }
 
     next();

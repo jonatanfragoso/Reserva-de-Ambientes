@@ -34,10 +34,10 @@ create table "agendamentos" (
   dia_semana varchar(50),
   situacao varchar(50) not null,
   id_usuario integer not null,
+  nome_gestor varchar(100),
   id_gestor integer,
   id_local integer not null,
   foreign key (id_usuario) references usuarios (id),
-  foreign key (id_gestor) references gestor (id),
   foreign key (id_local) references locais (id)
 );
 
