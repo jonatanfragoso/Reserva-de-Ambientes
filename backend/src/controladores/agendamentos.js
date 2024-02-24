@@ -42,7 +42,29 @@ const reservarAmbiente = async (req, res) => {
 
     let agendamento;
     let dataBanco;
+    let verificaChoqueHorarioNaMesmaData;
 
+    // CRIANDO VARIAVEIS PARA ARMAZENAR DADOS PARA IMPEDIR CONFLITOS DE HORARIOS
+    const hora_inicio_inteira = hora_inicio.split(":");
+    const hora_inicio_inteira_split = `${hora_inicio_inteira[0]}${hora_inicio_inteira[1]}`;
+    const hora_inicio_inteira_formatada = parseInt(hora_inicio_inteira_split);
+
+    const hora_fim_inteira = hora_fim.split(":");
+    const hora_fim_inteira_split = `${hora_fim_inteira[0]}${hora_fim_inteira[1]}`;
+    const hora_fim_inteira_formatada = parseInt(hora_fim_inteira_split);
+
+    //CHECANDO SE HORA INICIAL É MAIOR-IGUAL A FINAL
+    if (hora_inicio_inteira_formatada >= hora_fim_inteira_formatada) {
+      return res.status(400).json({
+        mensagem: "A hora final tem que ser maior que a inicial.",
+      });
+    }
+
+    if (data_final < data_inicial) {
+      return res.status(400).json({
+        mensagem: "A data de inicio não pode ser menor que a final.",
+      });
+    }
     if (repetir) {
       let verificarChoqueHorario_repetido;
       for (let j = 0; j <= semanas; j++) {
@@ -52,18 +74,53 @@ const reservarAmbiente = async (req, res) => {
           .format("L");
         dataBanco = minhaData.split("/");
 
+        //VERIFICA SE ALGUM USUÁRIO TEM HORÁRIO AGENDADO NAQUELA DATA, HORÁRIO E LOCAL.
         verificarChoqueHorario_repetido = await knex("agendamentos")
-          .whereBetween("hora_inicio", [hora_inicio, hora_fim])
-          .andWhere({
+          .where({
             data_agendamento: `${dataBanco[2]}/${dataBanco[1]}/${dataBanco[0]}`,
           })
           .andWhere("situacao", "<>", "Negado")
+          .andWhere("id_local", local)
           .debug();
         if (verificarChoqueHorario_repetido.length > 0) {
-          return res.status(400).json({
-            mensagem:
-              "Ambiente já reservado entre o intervalo de datas solicitado.",
-          });
+          verificaChoqueHorarioNaMesmaData = await knex("agendamentos")
+            .where("hora_inicio", hora_inicio)
+            .orWhere("hora_inicio", hora_fim)
+            .orWhere("hora_fim", hora_fim)
+            .orWhere("hora_fim", hora_inicio);
+          if (verificaChoqueHorarioNaMesmaData.length > 0) {
+            for (
+              let i = hora_inicio_inteira_formatada + 1;
+              i < hora_fim_inteira_formatada;
+              i++
+            ) {
+              console.log(i);
+              if (i === hora_fim_inteira_formatada) {
+                console.log("CHOQUE DE HORA INICIAL");
+                return res.status(400).json({
+                  mensagem:
+                    "Ambiente já reservado entre o intervalo de datas solicitado.",
+                });
+              }
+            }
+            for (
+              let i = hora_fim_inteira_formatada - 1;
+              i > hora_inicio_inteira_formatada;
+              i--
+            ) {
+              if (i === hora_inicio_inteira_formatada) {
+                console.log("CHOQUE DE HORA FINAL");
+                return res.status(400).json({
+                  mensagem:
+                    "Ambiente já reservado entre o intervalo de datas solicitado.",
+                });
+              }
+            }
+            return res.status(400).json({
+              mensagem:
+                "Ambiente já reservado entre o intervalo de datas solicitado.",
+            });
+          }
         }
         aux += 7;
       }
@@ -96,6 +153,8 @@ const reservarAmbiente = async (req, res) => {
         data_final: data_final,
       });
     }
+
+    // QUANDO O AGENDAMENTO NÃO SE REPETIR!!!!!
     minhaData = moment(dataFormatada, "D/M/YYYY")
       .locale("pt-br")
       .add(aux, "days")
@@ -103,14 +162,44 @@ const reservarAmbiente = async (req, res) => {
     dataBanco = minhaData.split("/");
 
     const verificarChoqueHorario = await knex("agendamentos")
-      .whereBetween("hora_inicio", [hora_inicio, hora_fim])
-      .andWhere({
+      .where({
         data_agendamento: `${dataBanco[2]}/${dataBanco[1]}/${dataBanco[0]}`,
       })
-      .andWhere("situacao", "<>", "Negado");
+      .andWhere("situacao", "<>", "Negado")
+      .andWhere("id_local", local)
+      .debug();
+
     if (verificarChoqueHorario.length > 0) {
+      for (
+        let i = hora_inicio_inteira_formatada + 1;
+        i < hora_fim_inteira_formatada;
+        i++
+      ) {
+        console.log(i);
+        if (i === hora_fim_inteira_formatada) {
+          console.log("CHOQUE DE HORA INICIAL");
+          return res.status(400).json({
+            mensagem:
+              "Ambiente já reservado entre o intervalo de datas solicitado.",
+          });
+        }
+      }
+      for (
+        let i = hora_fim_inteira_formatada - 1;
+        i > hora_inicio_inteira_formatada;
+        i--
+      ) {
+        if (i === hora_inicio_inteira_formatada) {
+          console.log("CHOQUE DE HORA FINAL");
+          return res.status(400).json({
+            mensagem:
+              "Ambiente já reservado entre o intervalo de datas solicitado.",
+          });
+        }
+      }
       return res.status(400).json({
-        mensagem: "Já existe uma reserva nesta data e hora para este local.",
+        mensagem:
+          "Ambiente já reservado entre o intervalo de datas solicitado.",
       });
     }
 

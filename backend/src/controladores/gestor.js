@@ -26,7 +26,6 @@ const obterSolicitacoesAgendamentosPendentes = async (req, res) => {
       .whereILike("situacao", "pendente");
     return res.status(200).json(listaSolicitacoes);
   } catch (error) {
-    console.log(error.message);
     return res.status(500).json({ mensagem: "Erro interno do servidor." });
   }
 };

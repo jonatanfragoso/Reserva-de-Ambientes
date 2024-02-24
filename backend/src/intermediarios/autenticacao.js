@@ -5,6 +5,7 @@ const verificarUsuarioLogado = async (req, res, next) => {
   const { authorization } = req.headers;
 
   if (!authorization) {
+    console.log("alo");
     return res.status(401).json({ mensagem: "Não autorizado." });
   }
 
