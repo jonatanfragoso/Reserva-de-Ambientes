@@ -54,7 +54,6 @@ const obterSolicitacoesAgendamentosNegadas = async (req, res) => {
       .whereILike("situacao", "negado");
     return res.status(200).json(listaSolicitacoes);
   } catch (error) {
-    console.log(error.message);
     return res.status(500).json({ mensagem: "Erro interno do servidor." });
   }
 };
@@ -139,13 +138,15 @@ const aceitarSolicitacoes = async (req, res) => {
 
     return res.status(204).json();
   } catch (error) {
-    console.log(error.message);
     return res.status(500).json({ mensagem: "Erro interno do servidor." });
   }
 };
 
 const negarSolicitacoes = async (req, res) => {
-  const { id } = req.usuario;
+  const { authorization } = req.headers;
+  const token = authorization.split(" ")[1];
+  const { id } = jwt.verify(token, senhaJWT);
+
   const {
     data_inicial,
     data_final,
@@ -153,6 +154,7 @@ const negarSolicitacoes = async (req, res) => {
     hora_inicio,
     hora_fim,
     dia_semana,
+    local,
   } = req.body;
 
   if (
@@ -161,23 +163,32 @@ const negarSolicitacoes = async (req, res) => {
     !id_solicitante ||
     !hora_inicio ||
     !hora_fim ||
-    !dia_semana
+    !dia_semana ||
+    !local
   ) {
     return res
       .status(400)
       .json({ mensagem: "Todos os campos são obrigatórios." });
   }
+  let dataQuebrada = data_inicial.split("/");
+  let dataQuebrada2 = data_final.split("/");
+  let data_inicial_formatada = `${dataQuebrada[2]}/${dataQuebrada[1]}/${dataQuebrada[0]}`;
+  let data_final_formatada = `${dataQuebrada2[2]}/${dataQuebrada2[1]}/${dataQuebrada2[0]}`;
   try {
+    const nome_gestor = await knex("usuarios").select("nome").where({ id: id });
     await knex("agendamentos")
       .update({
+        nome_gestor: nome_gestor[0].nome,
         id_gestor: id,
         situacao: "Negado",
       })
-      .where("data_agendamento", ">=", data_inicial)
-      .andWhere("data_agendamento", "<=", data_final)
+      .where("data_agendamento", ">=", data_inicial_formatada)
+      .andWhere("data_agendamento", "<=", data_final_formatada)
       .andWhere("hora_inicio", ">=", hora_inicio)
       .andWhere("hora_fim", "<=", hora_fim)
       .andWhere({ id_usuario: id_solicitante })
+      .andWhere({ id_local: local })
+      .andWhereILike("situacao", "Pendente")
       .andWhereILike("dia_semana", dia_semana);
 
     return res.status(204).json();
