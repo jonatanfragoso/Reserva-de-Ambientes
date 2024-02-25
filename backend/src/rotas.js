@@ -6,6 +6,7 @@ const autenticacaoMiddleware = require("./intermediarios/autenticacao");
 const gestorMiddleware = require("./intermediarios/verificarGestor");
 const agendamentosController = require("./controladores/agendamentos");
 const gestorController = require("./controladores/gestor");
+const professorController = require("./controladores/professor");
 
 rotas.post("/login", usuariosController.login);
 
@@ -23,7 +24,7 @@ rotas.post(
 rotas.get("/obter-perfil", usuariosController.obterPerfil);
 
 rotas.post("/agendamentos", agendamentosController.reservarAmbiente);
-
+//Rotas de Gestor
 rotas.get(
   "/obter-solicitacoes-pendentes",
   gestorMiddleware.verificarGestor,
@@ -53,6 +54,17 @@ rotas.post(
   "/negar-solicitacoes",
   gestorMiddleware.verificarGestor,
   gestorController.negarSolicitacoes
+);
+
+//Rotas de professor
+rotas.get(
+  "/obter-proximos-agendamentos",
+  professorController.listarProximosAgendamentos
+);
+
+rotas.get(
+  "/obter-historico-agendamentos",
+  professorController.listarHistoricoAgendamentos
 );
 
 module.exports = rotas;
