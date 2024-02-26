@@ -1,0 +1,24 @@
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  width: 800px;
+  min-height: 80px;
+  padding: 8px;
+  border: 1px solid lightgray;
+
+  // &:hover {
+  //   border: 1px solid green;
+  //   transform: scale(1.01);
+
+  //   // background-color: lightgray;
+  // }
+
+  button {
+    margin: 0 16px;
+    font-size: 12px;
+    max-height: 36px;
+    max-width: 96px;
+  }
+}

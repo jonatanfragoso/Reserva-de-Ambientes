@@ -226,6 +226,7 @@ const reservarAmbiente = async (req, res) => {
       data: data_inicial,
     });
   } catch (error) {
+    console.log(error.message);
     return res.status(500).json({ mensagem: "Erro interno do servidor." });
   }
 };

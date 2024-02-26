@@ -1,0 +1,32 @@
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  min-width: 280px;
+  padding: 0 16px;
+
+  background-color: #020024;
+  color: white;
+
+  img {
+    width: 150px;
+    margin: 25px 25px 50px 25px;
+  }
+
+  nav {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+    a {
+      text-decoration: none;
+      color: white;
+      font-size: 16px;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+}
