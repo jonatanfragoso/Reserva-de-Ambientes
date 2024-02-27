@@ -9,6 +9,7 @@ const gestorController = require("./controladores/gestor");
 const professorController = require("./controladores/professor");
 
 rotas.post("/login", usuariosController.login);
+rotas.post("/cadastrar-usuario", usuariosController.cadastrarUsuario);
 
 rotas.use(autenticacaoMiddleware.verificarUsuarioLogado);
 

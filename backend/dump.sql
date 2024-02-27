@@ -41,7 +41,5 @@ create table "agendamentos" (
   foreign key (id_local) references locais (id)
 );
 
-situa
-
 
 

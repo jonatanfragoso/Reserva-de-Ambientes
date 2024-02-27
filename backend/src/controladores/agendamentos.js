@@ -11,6 +11,13 @@ const reservarAmbiente = async (req, res) => {
   let dataQuebrada = data_inicial.split("/");
   let dataQuebrada2 = data_final.split("/");
 
+  const dataInicioQuebrada = new Date(
+    `${dataQuebrada[1]}/${dataQuebrada[0]}/${dataQuebrada[2]}`
+  );
+  const dataFimQuebrada = new Date(
+    `${dataQuebrada2[1]}/${dataQuebrada2[0]}/${dataQuebrada2[2]}`
+  );
+
   try {
     const nomeLocal = await knex("locais").where({ id: local }).first();
     //função que calcula a diferença de dias entre duas datas
@@ -43,28 +50,29 @@ const reservarAmbiente = async (req, res) => {
     let dataBanco;
     let verificaChoqueHorarioNaMesmaData;
 
-    // CRIANDO VARIAVEIS PARA ARMAZENAR DADOS PARA IMPEDIR CONFLITOS DE HORARIOS
-    const hora_inicio_inteira = hora_inicio.split(":");
-    const hora_inicio_inteira_split = `${hora_inicio_inteira[0]}${hora_inicio_inteira[1]}`;
-    const hora_inicio_inteira_formatada = parseInt(hora_inicio_inteira_split);
+    // // CRIANDO VARIAVEIS PARA ARMAZENAR DADOS PARA IMPEDIR CONFLITOS DE HORARIOS
+    // const hora_inicio_inteira = hora_inicio.split(":");
+    // const hora_inicio_inteira_split = `${hora_inicio_inteira[0]}${hora_inicio_inteira[1]}`;
+    // const hora_inicio_inteira_formatada = parseInt(hora_inicio_inteira_split);
 
-    const hora_fim_inteira = hora_fim.split(":");
-    const hora_fim_inteira_split = `${hora_fim_inteira[0]}${hora_fim_inteira[1]}`;
-    const hora_fim_inteira_formatada = parseInt(hora_fim_inteira_split);
+    // const hora_fim_inteira = hora_fim.split(":");
+    // const hora_fim_inteira_split = `${hora_fim_inteira[0]}${hora_fim_inteira[1]}`;
+    // const hora_fim_inteira_formatada = parseInt(hora_fim_inteira_split);
 
     //CHECANDO SE HORA INICIAL É MAIOR-IGUAL A FINAL
 
-    if (hora_inicio_inteira_formatada >= hora_fim_inteira_formatada) {
-      return res.status(400).json({
-        mensagem: "A hora final tem que ser maior que a inicial.",
-      });
-    }
+    // if (hora_inicio_inteira_formatada >= hora_fim_inteira_formatada) {
+    //   return res.status(400).json({
+    //     mensagem: "A hora final tem que ser maior que a inicial.",
+    //   });
+    // }
 
-    if (data_final < data_inicial) {
-      return res.status(400).json({
-        mensagem: "A data de inicio não pode ser menor que a final.",
-      });
-    }
+    // if (diffDays <= 0) {
+    //   console.log("DIF DAYS: ------------------- :", diffDays);
+    //   return res.status(400).json({
+    //     mensagem: "A data de inicio não pode ser menor que a final.",
+    //   });
+    // }
 
     //VERIFICA SE O USUÁRIO SOLICITANTE JA TEM UM OUTRO HORÁRIO NESTA DATA E HORÁRIO
     let verificarChoqueHorarioDoUsuario;
@@ -80,8 +88,8 @@ const reservarAmbiente = async (req, res) => {
         })
         .andWhereBetween("hora_inicio", [hora_inicio, hora_fim])
         .andWhere("situacao", "<>", "Negado")
-        .andWhere("id_usuario", user.id)
-        .debug();
+        .andWhere("id_usuario", user.id);
+      // .debug();
 
       if (verificarChoqueHorarioDoUsuario.length > 0) {
         return res.status(400).json({
@@ -105,8 +113,8 @@ const reservarAmbiente = async (req, res) => {
         })
         .andWhereBetween("hora_fim", [hora_inicio, hora_fim])
         .andWhere("situacao", "<>", "Negado")
-        .andWhere("id_usuario", user.id)
-        .debug();
+        .andWhere("id_usuario", user.id);
+      // .debug();
 
       if (verificarChoqueHorarioDoUsuario.length > 0) {
         return res.status(400).json({
@@ -119,6 +127,13 @@ const reservarAmbiente = async (req, res) => {
 
     aux = 0;
 
+    // ------------------------------- VERIFICAR SE DATA INICIAL É MAIOR QUE A FINAL ---------------------------------
+    if (dataInicioQuebrada > dataFimQuebrada) {
+      return res.status(400).json({
+        mensagem: "A data de inicio não pode ser menor que a final.",
+      });
+    }
+
     if (repetir) {
       let verificarChoqueHorario_repetido;
 
@@ -128,6 +143,7 @@ const reservarAmbiente = async (req, res) => {
           .add(aux, "days")
           .format("L");
         dataBanco = minhaData.split("/");
+
         //VERIFICA SE ALGUM USUÁRIO TEM HORÁRIO AGENDADO NAQUELA DATA, HORÁRIO E LOCAL.
         verificarChoqueHorario_repetido = await knex("agendamentos")
           .where({
@@ -136,8 +152,8 @@ const reservarAmbiente = async (req, res) => {
           .andWhereBetween("hora_inicio", [hora_inicio, hora_fim])
           .andWhereBetween("hora_fim", [hora_inicio, hora_fim])
           .andWhere("situacao", "<>", "Negado")
-          .andWhere("id_local", local)
-          .debug();
+          .andWhere("id_local", local);
+        // .debug();
         if (verificarChoqueHorario_repetido.length > 0) {
           return res.status(400).json({
             mensagem:
@@ -191,8 +207,8 @@ const reservarAmbiente = async (req, res) => {
       .andWhereBetween("hora_inicio", [hora_inicio, hora_fim])
       .andWhereBetween("hora_fim", [hora_inicio, hora_fim])
       .andWhere("situacao", "<>", "Negado")
-      .andWhere("id_local", local)
-      .debug();
+      .andWhere("id_local", local);
+    // .debug();
 
     if (verificarChoqueHorario.length > 0) {
       verificaChoqueHorarioNaMesmaData = await knex("agendamentos")
