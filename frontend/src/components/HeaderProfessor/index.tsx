@@ -1,7 +1,10 @@
 import styles from "./styles.module.scss";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import LogoImg from "../../assets/ifac-logo.png";
+import useAuth from "../../hooks/useAuth";
 function HeaderProfessor() {
+  const { handleLogout, handleGetGestor } = useAuth();
+  const id_gestor = handleGetGestor();
   return (
     <header className={styles.header}>
       <img src={LogoImg} alt="Logo" />
@@ -34,8 +37,12 @@ function HeaderProfessor() {
             };
           }}
         >
-          Reseervar Ambiente
+          Reservar Ambiente
         </NavLink>
+        {id_gestor === "1" && <NavLink to="main-gestor">Página Gestor</NavLink>}
+        <Link to="/" onClick={handleLogout}>
+          Sair
+        </Link>
       </nav>
     </header>
   );

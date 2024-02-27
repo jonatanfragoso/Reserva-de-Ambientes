@@ -3,7 +3,7 @@ import styles from "./styles.module.scss";
 import { useNavigate } from "react-router-dom";
 import api from "../../services/api";
 import useAuth from "../../hooks/useAuth";
-import ptBR from "date-fns/locale/pt-BR";
+// import ptBR from "date-fns/locale/pt-BR";
 
 function CadastrarUsuario() {
   const [idFuncao, setIdFuncao] = useState(0);

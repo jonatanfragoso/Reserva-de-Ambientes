@@ -49,8 +49,12 @@ function Agendamentos({ agendamento }: IProps) {
       <p>{agendamento.situacao}</p>
       {agendamento.situacao === "Pendente" && (
         <>
-          <button onClick={handleSubmitAceitar}>Aceitar</button>
-          <button onClick={handleSubmitNegar}>Negar</button>
+          <button className={styles.btnAceitar} onClick={handleSubmitAceitar}>
+            Aceitar
+          </button>
+          <button className={styles.btnCancelar} onClick={handleSubmitNegar}>
+            Negar
+          </button>
         </>
       )}
     </div>

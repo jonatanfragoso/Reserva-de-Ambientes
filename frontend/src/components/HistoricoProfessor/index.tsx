@@ -24,6 +24,7 @@ function HistoricoProfessor({ agendamento }: IProps) {
       <p>Início: {hora_inicio_formatada}</p>
       <p>Término: {hora_fim_formatada}</p>
       <p>Data: {data_inicio_formatada}</p>
+      <p>Situação: {agendamento.situacao}</p>
     </div>
   );
 }

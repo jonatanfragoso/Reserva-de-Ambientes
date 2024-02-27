@@ -3,7 +3,7 @@
   align-items: center;
 
   width: 800px;
-  min-height: 80px;
+  height: 90px;
   padding: 8px;
   border: 1px solid lightgray;
 
@@ -20,4 +20,12 @@
     max-height: 36px;
     max-width: 96px;
   }
+}
+
+.btnCancelar {
+  background-color: rgb(230, 105, 105);
+}
+
+.btnAceitar {
+  background-color: rgb(109, 231, 109);
 }

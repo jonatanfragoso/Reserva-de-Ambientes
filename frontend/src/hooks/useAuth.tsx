@@ -18,12 +18,18 @@ function useAuth() {
   function handleGetGestor(): string | null {
     return localStorage.getItem("id_gestor");
   }
+
+  function handleLogout() {
+    localStorage.clear();
+  }
+
   return {
     handleAddToken,
     handleClearToken,
     handleGetToken,
     handleGetGestor,
     handleAddGestor,
+    handleLogout,
   };
 }
 
