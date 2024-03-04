@@ -8,6 +8,9 @@ import MainProfessor from "./pages/MainProfessor";
 import HeaderLayoutProfessor from "./components/Layouts/HeaderLayoutProfessor";
 import HistoricoAgendamentosProfessor from "./pages/HistoricoAgendamentosProfessor";
 import SolicitarAgendamento from "./components/SolicitarAgendamento";
+import AtualizarPerfil from "./pages/AtualizarPerfil";
+import ListarUsuarios from "./pages/ListarUsuarios";
+import EditarUsuarioUnico from "./components/EditarUsuarioUnico";
 
 interface IProps {
   redirectTo: string;
@@ -50,6 +53,18 @@ function MainRoutes() {
             path="/cadastrar-usuarios"
             element={<CadastrarUsuarios></CadastrarUsuarios>}
           ></Route>
+          <Route
+            path="/meu-perfil-gestor"
+            element={<AtualizarPerfil></AtualizarPerfil>}
+          ></Route>
+          <Route
+            path="/usuarios"
+            element={<ListarUsuarios></ListarUsuarios>}
+          ></Route>
+          <Route
+            path="/usuario/:id"
+            element={<EditarUsuarioUnico></EditarUsuarioUnico>}
+          ></Route>
         </Route>
       </Route>
 
@@ -75,6 +90,10 @@ function MainRoutes() {
           <Route
             path="/reservar-ambiente"
             element={<SolicitarAgendamento></SolicitarAgendamento>}
+          ></Route>
+          <Route
+            path="/meu-perfil"
+            element={<AtualizarPerfil></AtualizarPerfil>}
           ></Route>
         </Route>
       </Route>

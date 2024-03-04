@@ -17,6 +17,7 @@ create table "usuarios" (
   matricula varchar(50) not null,
   id_funcao integer not null,
   id_gestor integer not null,
+  ativo boolean not null,
   foreign key (id_funcao) references funcao (id),
   foreign key (id_gestor) references gestor (id)
 );
@@ -34,6 +35,7 @@ create table "agendamentos" (
   dia_semana varchar(50),
   situacao varchar(50) not null,
   id_usuario integer not null,
+  nome_usuario varchar(100) not null,
   nome_gestor varchar(100),
   id_gestor integer,
   id_local integer not null,

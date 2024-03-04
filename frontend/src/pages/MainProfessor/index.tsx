@@ -26,10 +26,10 @@ function MainProfessor() {
     })();
   }, []);
 
-  const aux1 = new Date();
-  const aux2 = aux1.toString();
-  const aux3 = aux2.split(" ")[4].split(":");
-  const agora = `${aux3[0]}:${aux3[1]}`;
+  // const aux1 = new Date();
+  // const aux2 = aux1.toString();
+  // const aux3 = aux2.split(" ")[4].split(":");
+  // const agora = `${aux3[0]}:${aux3[1]}`;
 
   const dataAtual = moment();
   const dataVencimento = moment("2021-02-01");

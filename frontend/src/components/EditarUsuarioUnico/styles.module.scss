@@ -20,7 +20,6 @@
   font-size: 16px;
   font-weight: bold;
   form {
-    margin-left: 50px;
     width: 400px;
     display: flex;
     flex-direction: column;
@@ -69,13 +68,5 @@
   justify-content: space-between;
   img {
     width: 40px;
-  }
-}
-
-.divBotoes {
-  display: flex;
-  gap: 16px;
-  button {
-    width: 150px;
   }
 }

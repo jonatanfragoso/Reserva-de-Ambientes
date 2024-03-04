@@ -2,6 +2,7 @@ const knex = require("../conexao");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const senhaJWT = require("../senhaJWT");
+const moment = require("moment");
 
 const login = async (req, res) => {
   const { email, senha } = req.body;
@@ -14,6 +15,10 @@ const login = async (req, res) => {
     const senhaValida = await bcrypt.compare(senha, usuario.senha);
     if (!senhaValida) {
       return res.status(404).json({ mensagem: "Usuário ou senha inválidos." });
+    }
+
+    if (usuario.ativo === false) {
+      return res.status(404).json({ mensagem: "Usuario Desativado." });
     }
 
     const token = jwt.sign(
@@ -37,9 +42,7 @@ const listarUsuarios = async (req, res) => {
   try {
     const usuarios = await knex("usuarios").debug();
 
-    const listaUsuarios = usuarios;
-
-    return res.status(200).json({ listaUsuarios });
+    return res.status(200).json(usuarios);
   } catch (error) {
     return res.status(500).json({ mensagem: "Erro interno do servidor." });
   }
@@ -54,6 +57,7 @@ const obterUsuario = async (req, res) => {
     }
     return res.status(200).json({ usuario });
   } catch (error) {
+    console.log(error.message);
     return res.status(500).json({ mensagem: "Erro interno do servidor." });
   }
 };
@@ -94,7 +98,7 @@ const cadastrarUsuario = async (req, res) => {
       return res.status(400).json({ mensagem: "Matricula já cadastrada." });
     }
 
-    const novoUsuario = await knex("usuarios").insert({
+    await knex("usuarios").insert({
       nome: nome,
       email: email,
       senha: senhaCriptografada,
@@ -102,9 +106,108 @@ const cadastrarUsuario = async (req, res) => {
       matricula: matricula,
       id_funcao: id_funcao,
       id_gestor: id_gestor,
+      ativo: true,
     });
 
     return res.status(201).json({ mensagem: "Cadastrado com sucesso." });
+  } catch (error) {
+    console.log(error.message);
+    return res.status(500).json({ mensagem: "Erro interno do servidor." });
+  }
+};
+
+const listarProximosAgendamentos = async (req, res) => {
+  const { authorization } = req.headers;
+  const token = authorization.split(" ")[1];
+  const { id } = jwt.verify(token, senhaJWT);
+  const hoje = moment().format("YYYY-MM-DD");
+
+  try {
+    const listaAgendamentos = await knex("agendamentos")
+      .where("id_usuario", id)
+      .andWhere("situacao", "<>", "Negado")
+      .andWhere("data_agendamento", ">=", hoje)
+      .orderBy("data_agendamento")
+      .orderBy("hora_inicio");
+
+    return res.status(200).json(listaAgendamentos);
+  } catch (error) {
+    return res.status(500).json({ mensagem: "Erro interno do servidor." });
+  }
+};
+
+const listarHistoricoAgendamentos = async (req, res) => {
+  const { authorization } = req.headers;
+  const token = authorization.split(" ")[1];
+  const { id } = jwt.verify(token, senhaJWT);
+  //   const hoje = moment().format("YYYY-MM-DD");
+
+  try {
+    const listaAgendamentos = await knex("agendamentos")
+      .where("id_usuario", id)
+      .orderBy("data_agendamento");
+
+    return res.status(200).json(listaAgendamentos);
+  } catch (error) {
+    return res.status(500).json({ mensagem: "Erro interno do servidor." });
+  }
+};
+
+const atualizarSenha = async (req, res) => {
+  const { senhaAtual, novaSenha } = req.body;
+  const { authorization } = req.headers;
+  const token = authorization.split(" ")[1];
+  const { id } = jwt.verify(token, senhaJWT);
+  try {
+    const usuario = await knex("usuarios").where({ id: id }).first();
+    const senhaValida = await bcrypt.compare(senhaAtual, usuario.senha);
+    if (!senhaValida) {
+      return res
+        .status(404)
+        .json({ mensagem: "A senha atual está incorreta." });
+    }
+    const senhaCriptografada = await bcrypt.hash(novaSenha, 10);
+    await knex("usuarios").where({ id: id }).update({
+      senha: senhaCriptografada,
+    });
+
+    return res.status(201).json({ mensagem: "Senha atualizada com sucesso!" });
+  } catch (error) {
+    console.log(error.message);
+    return res.status(500).json({ mensagem: "Erro interno do servidor." });
+  }
+};
+
+const atualizarPerfil = async (req, res) => {
+  const { authorization } = req.headers;
+  const token = authorization.split(" ")[1];
+  const { id } = jwt.verify(token, senhaJWT);
+  try {
+    const { nome, email, telefone } = req.body;
+
+    if ((!nome, !email, !telefone)) {
+      return res
+        .status(400)
+        .json({ mensagem: "Todos os campos são obrigatórios." });
+    }
+
+    const emailValido = await knex("usuarios").where({ email: email });
+    const emaildoMesmoUsuario = await knex("usuarios")
+      .where({ email: email })
+      .andWhere({ id: id });
+    if (emailValido.length > 0 && emaildoMesmoUsuario.length == 0) {
+      return res
+        .status(400)
+        .json({ mensagem: "Este email já está sendo utilizado." });
+    }
+
+    await knex("usuarios").where({ id: id }).update({
+      nome: nome,
+      email: email,
+      telefone: telefone,
+    });
+
+    return res.status(201).json({ mensagem: "Atualizado com sucesso." });
   } catch (error) {
     console.log(error.message);
     return res.status(500).json({ mensagem: "Erro interno do servidor." });
@@ -117,4 +220,8 @@ module.exports = {
   cadastrarUsuario,
   login,
   obterPerfil,
+  atualizarPerfil,
+  listarHistoricoAgendamentos,
+  listarProximosAgendamentos,
+  atualizarSenha,
 };

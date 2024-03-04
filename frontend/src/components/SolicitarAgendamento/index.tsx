@@ -101,6 +101,16 @@ function SolicitarAgendamento() {
     }
   }
 
+  // function handleCancelar() {
+  //   // setDataInicio(moment(startDate).format("DD/MM/yyyy"));
+  //   // setDataFim(moment(startDate).format("DD/MM/yyyy"));
+  //   setStartEndDate(startDate);
+  //   setStartDate(startDate);
+  //   setHoraInicio("");
+  //   setHoraFim("");
+  //   setRepetir(false);
+  // }
+
   return (
     <div className={styles.container}>
       <div className={styles.titulo}>
@@ -154,7 +164,12 @@ function SolicitarAgendamento() {
             <option value={4}>Lab 4</option>
             <option value={5}>Lab 5</option>
           </select>
-          <button>Solicitar</button>
+          <div>
+            <div className={styles.divBotoes}>
+              <button className={styles.btnVerde}>Solicitar</button>
+              {/* <button className={styles.btnVermelho}>Cancelar</button> */}
+            </div>
+          </div>
         </form>
       </div>
     </div>

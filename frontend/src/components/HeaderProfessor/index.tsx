@@ -40,6 +40,17 @@ function HeaderProfessor() {
           Reservar Ambiente
         </NavLink>
         {id_gestor === "1" && <NavLink to="main-gestor">Página Gestor</NavLink>}
+
+        <NavLink
+          to="/meu-perfil"
+          style={({ isActive }) => {
+            return {
+              color: isActive ? "green" : "inherit",
+            };
+          }}
+        >
+          Configurações
+        </NavLink>
         <Link to="/" onClick={handleLogout}>
           Sair
         </Link>

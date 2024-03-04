@@ -27,9 +27,29 @@ function HeaderGestor() {
             };
           }}
         >
-          Cadastrar Usuarios
+          Cadastrar Usuários
+        </NavLink>
+        <NavLink
+          to="/usuarios"
+          style={({ isActive }) => {
+            return {
+              color: isActive ? "green" : "inherit",
+            };
+          }}
+        >
+          Editar Usuários
         </NavLink>
         <NavLink to="/main-professor">Página do Professor</NavLink>
+        <NavLink
+          to="/meu-perfil-gestor"
+          style={({ isActive }) => {
+            return {
+              color: isActive ? "green" : "inherit",
+            };
+          }}
+        >
+          Configurações
+        </NavLink>
         <Link to="/" onClick={handleLogout}>
           Sair
         </Link>

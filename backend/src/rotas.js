@@ -6,14 +6,11 @@ const autenticacaoMiddleware = require("./intermediarios/autenticacao");
 const gestorMiddleware = require("./intermediarios/verificarGestor");
 const agendamentosController = require("./controladores/agendamentos");
 const gestorController = require("./controladores/gestor");
-const professorController = require("./controladores/professor");
 
 rotas.post("/login", usuariosController.login);
 
 rotas.use(autenticacaoMiddleware.verificarUsuarioLogado);
 
-rotas.get("/usuarios", usuariosController.listarUsuarios);
-rotas.get("/usuario/:id", usuariosController.obterUsuario);
 rotas.get("/locais", locaisController.listarLocais);
 rotas.get("/local/:id", locaisController.obterLocal);
 rotas.post(
@@ -23,8 +20,26 @@ rotas.post(
 );
 rotas.get("/obter-perfil", usuariosController.obterPerfil);
 
-rotas.post("/agendamentos", agendamentosController.reservarAmbiente);
 //Rotas de Gestor
+
+rotas.get(
+  "/usuarios",
+  gestorMiddleware.verificarGestor,
+  usuariosController.listarUsuarios
+);
+
+rotas.get(
+  "/usuario/:id",
+  gestorMiddleware.verificarGestor,
+  usuariosController.obterUsuario
+);
+
+rotas.put(
+  "/editar-usuario",
+  gestorMiddleware.verificarGestor,
+  gestorController.editarUsuarios
+);
+
 rotas.get(
   "/obter-solicitacoes-pendentes",
   gestorMiddleware.verificarGestor,
@@ -56,15 +71,26 @@ rotas.post(
   gestorController.negarSolicitacoes
 );
 
+rotas.put(
+  "/editar-usuarios",
+  gestorMiddleware.verificarGestor,
+  gestorController.editarUsuarios
+);
+
 //Rotas de professor
 rotas.get(
   "/obter-proximos-agendamentos",
-  professorController.listarProximosAgendamentos
+  usuariosController.listarProximosAgendamentos
 );
 
 rotas.get(
   "/obter-historico-agendamentos",
-  professorController.listarHistoricoAgendamentos
+  usuariosController.listarHistoricoAgendamentos
 );
+
+rotas.put("/atualizar-perfil", usuariosController.atualizarPerfil);
+
+rotas.post("/agendamentos", agendamentosController.reservarAmbiente);
+rotas.put("/atualizar-senha", usuariosController.atualizarSenha);
 
 module.exports = rotas;

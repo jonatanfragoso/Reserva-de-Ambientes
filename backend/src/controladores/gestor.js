@@ -142,6 +142,10 @@ const aceitarSolicitacoes = async (req, res) => {
   }
 };
 
+const obterPerfil = async (req, res) => {
+  return res.status(200).json(req.usuario[0]);
+};
+
 const negarSolicitacoes = async (req, res) => {
   const { authorization } = req.headers;
   const token = authorization.split(" ")[1];
@@ -197,10 +201,57 @@ const negarSolicitacoes = async (req, res) => {
   }
 };
 
+const editarUsuarios = async (req, res) => {
+  const { id } = req.params;
+  const {
+    nome,
+    email,
+    senha,
+    telefone,
+    matricula,
+    id_funcao,
+    id_gestor,
+    ativo,
+  } = req.body;
+
+  if (
+    !nome ||
+    !email ||
+    !senha ||
+    !telefone ||
+    !matricula ||
+    !id_funcao ||
+    !id_gestor ||
+    !ativo
+  ) {
+    return res
+      .status(400)
+      .json({ mensagem: "Todos os campos são obrigatórios." });
+  }
+
+  try {
+    await knex("usuarios").where("id", id).update({
+      nome: nome,
+      email: email,
+      telefone: telefone,
+      matricula: matricula,
+      id: id_funcao,
+      id_gestor: id_gestor,
+      ativo: ativo,
+    });
+
+    return res.status(201).json({ mensagem: "Atualizado com suceosso." });
+  } catch (error) {
+    return res.status(500).json({ mensagem: "Erro interno do servidor." });
+  }
+};
+
 module.exports = {
   obterSolicitacoesAgendamentosPendentes,
   obterSolicitacoesAgendamentosAceitas,
   obterSolicitacoesAgendamentosNegadas,
   aceitarSolicitacoes,
   negarSolicitacoes,
+  obterPerfil,
+  editarUsuarios,
 };

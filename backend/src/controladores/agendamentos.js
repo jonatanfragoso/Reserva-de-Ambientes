@@ -164,6 +164,7 @@ const reservarAmbiente = async (req, res) => {
           id_local: local,
           situacao: "Pendente",
           dia_semana: dia_semana,
+          nome_usuario: user.nome,
         });
         aux += 7;
       }
@@ -217,6 +218,7 @@ const reservarAmbiente = async (req, res) => {
       id_local: local,
       situacao: "Pendente",
       dia_semana: dia_semana,
+      nome_usuario: user.nome,
     });
     return res.status(201).json({
       dia_semana: dia_semana,
