@@ -8,6 +8,7 @@ const agendamentosController = require("./controladores/agendamentos");
 const gestorController = require("./controladores/gestor");
 
 rotas.post("/login", usuariosController.login);
+rotas.post("/cadastrar-usuario", usuariosController.cadastrarUsuario);
 
 rotas.use(autenticacaoMiddleware.verificarUsuarioLogado);
 
