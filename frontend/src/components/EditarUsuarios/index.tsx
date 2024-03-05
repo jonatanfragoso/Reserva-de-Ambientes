@@ -8,8 +8,9 @@ interface IProps {
 
 function EditarUsuarios({ usuario }: IProps) {
   const navigate = useNavigate();
+
   function handleNavigate() {
-    navigate(`/usuario/${usuario.id}`);
+    navigate(`/usuarios/${usuario.id}`);
   }
   return (
     <div className={styles.container}>

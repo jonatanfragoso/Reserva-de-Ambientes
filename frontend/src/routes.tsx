@@ -62,7 +62,7 @@ function MainRoutes() {
             element={<ListarUsuarios></ListarUsuarios>}
           ></Route>
           <Route
-            path="/usuario/:id"
+            path="/usuarios/:id"
             element={<EditarUsuarioUnico></EditarUsuarioUnico>}
           ></Route>
         </Route>

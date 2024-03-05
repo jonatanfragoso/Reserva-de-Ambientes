@@ -30,7 +30,7 @@ rotas.get(
 );
 
 rotas.get(
-  "/usuario/:id",
+  "/usuarios/:id",
   gestorMiddleware.verificarGestor,
   usuariosController.obterUsuario
 );

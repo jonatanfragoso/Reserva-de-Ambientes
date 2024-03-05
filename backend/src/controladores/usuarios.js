@@ -50,6 +50,7 @@ const listarUsuarios = async (req, res) => {
 
 const obterUsuario = async (req, res) => {
   const { id } = req.params;
+  console.log(id);
   try {
     const usuario = await knex("usuarios").where({ id: id }).first().debug();
     if (!usuario) {
