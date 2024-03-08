@@ -3,56 +3,83 @@ import { NavLink } from "react-router-dom";
 import LogoImg from "../../assets/ifac-logo.png";
 import { Link } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faGear,
+  faHome,
+  faChalkboard,
+  faPlus,
+  faUserPen,
+  faArrowRightFromBracket,
+} from "@fortawesome/free-solid-svg-icons";
 function HeaderGestor() {
   const { handleLogout } = useAuth();
   return (
     <header className={styles.header}>
       <img src={LogoImg} alt="Logo" />
       <nav>
-        <NavLink
-          to="/main-gestor"
-          style={({ isActive }) => {
-            return {
-              color: isActive ? "green" : "inherit",
-            };
-          }}
-        >
-          Home
-        </NavLink>
-        <NavLink
-          to="/cadastrar-usuarios"
-          style={({ isActive }) => {
-            return {
-              color: isActive ? "green" : "inherit",
-            };
-          }}
-        >
-          Cadastrar Usuários
-        </NavLink>
-        <NavLink
-          to="/usuarios"
-          style={({ isActive }) => {
-            return {
-              color: isActive ? "green" : "inherit",
-            };
-          }}
-        >
-          Editar Usuários
-        </NavLink>
-        <NavLink to="/main-professor">Página do Professor</NavLink>
-        <NavLink
-          to="/meu-perfil-gestor"
-          style={({ isActive }) => {
-            return {
-              color: isActive ? "green" : "inherit",
-            };
-          }}
-        >
-          Configurações
-        </NavLink>
-        <Link to="/" onClick={handleLogout}>
-          Sair
-        </Link>
+        <div className={styles.navLinks}>
+          <FontAwesomeIcon icon={faHome} />
+          <NavLink
+            to="/main-gestor"
+            style={({ isActive }) => {
+              return {
+                color: isActive ? "green" : "inherit",
+              };
+            }}
+          >
+            Home
+          </NavLink>
+        </div>
+        <div className={styles.navLinks}>
+          <FontAwesomeIcon icon={faPlus} />
+          <NavLink
+            to="/cadastrar-usuarios"
+            style={({ isActive }) => {
+              return {
+                color: isActive ? "green" : "inherit",
+              };
+            }}
+          >
+            Cadastrar Usuários
+          </NavLink>
+        </div>
+        <div className={styles.navLinks}>
+          <FontAwesomeIcon icon={faUserPen} />
+          <NavLink
+            to="/usuarios"
+            style={({ isActive }) => {
+              return {
+                color: isActive ? "green" : "inherit",
+              };
+            }}
+          >
+            Editar Usuários
+          </NavLink>
+        </div>
+        <div className={styles.navLinks}>
+          <FontAwesomeIcon icon={faChalkboard} />
+          <NavLink to="/main-professor">Página do Professor</NavLink>
+        </div>
+        <div className={styles.navLinks}>
+          <FontAwesomeIcon icon={faGear} />
+          <NavLink
+            to="/meu-perfil-gestor"
+            style={({ isActive }) => {
+              return {
+                color: isActive ? "green" : "inherit",
+              };
+            }}
+          >
+            Configurações
+          </NavLink>
+        </div>
+        <div className={styles.navLinks}>
+          <FontAwesomeIcon icon={faArrowRightFromBracket} />
+          <Link to="/" onClick={handleLogout}>
+            Sair
+          </Link>
+        </div>
       </nav>
     </header>
   );

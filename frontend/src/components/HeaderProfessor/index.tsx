@@ -9,16 +9,18 @@ function HeaderProfessor() {
     <header className={styles.header}>
       <img src={LogoImg} alt="Logo" />
       <nav>
-        <NavLink
-          to="/main-professor"
-          style={({ isActive }) => {
-            return {
-              color: isActive ? "green" : "inherit",
-            };
-          }}
-        >
-          Home
-        </NavLink>
+        <div className={styles.navLinks}>
+          <NavLink
+            to="/main-professor"
+            style={({ isActive }) => {
+              return {
+                color: isActive ? "green" : "inherit",
+              };
+            }}
+          >
+            Home
+          </NavLink>
+        </div>
         <NavLink
           to="/historico-agendamentos"
           style={({ isActive }) => {
