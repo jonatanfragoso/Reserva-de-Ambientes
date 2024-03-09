@@ -1,4 +1,4 @@
-import EditarUsuarioUnico from "../../components/EditarUsuarioUnico";
+import EditarUsuarioUnico from "../../../components/EditarUsuarioUnico";
 import styles from "./styles.module.scss";
 function EditarUsuario() {
   return (

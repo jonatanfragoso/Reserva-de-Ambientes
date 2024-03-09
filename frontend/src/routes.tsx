@@ -2,14 +2,14 @@ import { Navigate, Outlet, Route, Routes } from "react-router-dom";
 import SignIn from "./pages/SignIn";
 import useAuth from "./hooks/useAuth";
 import HeaderLayout from "./components/Layouts/HeaderLayout";
-import CadastrarUsuarios from "./pages/CadastrarUsuarios";
-import MainGestor from "./pages/MainGestor";
-import MainProfessor from "./pages/MainProfessor";
+import CadastrarUsuarios from "./pages/Gestor/CadastrarUsuarios";
+import MainGestor from "./pages/Gestor/MainGestor";
+import MainProfessor from "./pages/Professor/MainProfessor";
 import HeaderLayoutProfessor from "./components/Layouts/HeaderLayoutProfessor";
-import HistoricoAgendamentosProfessor from "./pages/HistoricoAgendamentosProfessor";
+import HistoricoAgendamentosProfessor from "./pages/Professor/HistoricoAgendamentosProfessor";
 import SolicitarAgendamento from "./components/SolicitarAgendamento";
 import AtualizarPerfil from "./pages/AtualizarPerfil";
-import ListarUsuarios from "./pages/ListarUsuarios";
+import ListarUsuarios from "./pages/Gestor/ListarUsuarios";
 import EditarUsuarioUnico from "./components/EditarUsuarioUnico";
 
 interface IProps {

@@ -1,16 +1,16 @@
 import { useEffect, useState } from "react";
-import useAuth from "../../hooks/useAuth";
+import useAuth from "../../../hooks/useAuth";
+import { AgendamentoProfessorType } from "../../../types/AgendamentoProfessorType";
+import api from "../../../services/api";
 import styles from "./styles.module.scss";
-import { AgendamentoType } from "../../types/AgendamentoType";
-import api from "../../services/api";
-import Agendamentos from "../../components/Agendamentos";
+import HistoricoProfessor from "../../../components/HistoricoProfessor";
 
-function MainGestor() {
+function HistoricoAgendamentosProfessor() {
   const { handleGetToken } = useAuth();
 
   const token = handleGetToken();
   const [agendamentosAceitos, setAgendamentosAceitos] = useState<
-    AgendamentoType[]
+    AgendamentoProfessorType[]
   >([]);
 
   useEffect(() => {
@@ -18,8 +18,8 @@ function MainGestor() {
       if (token) {
         api.defaults.headers.authorization = `Bearer ${token}`;
       }
-      const response = await api.get<AgendamentoType[]>(
-        "/obter-solicitacoes-pendentes"
+      const response = await api.get<AgendamentoProfessorType[]>(
+        "/obter-historico-agendamentos"
       );
 
       setAgendamentosAceitos([...response.data]);
@@ -29,13 +29,17 @@ function MainGestor() {
   return (
     <div className={styles.container}>
       <div className={styles.divAgendamentos}>
-        <h1>Listagem de agendamentos pendentes</h1>
+        <h1>Histórico de Agendamentos</h1>
+
         {agendamentosAceitos.map((agendamento, index) => (
-          <Agendamentos agendamento={agendamento} key={index}></Agendamentos>
+          <HistoricoProfessor
+            agendamento={agendamento}
+            key={index}
+          ></HistoricoProfessor>
         ))}
       </div>
     </div>
   );
 }
 
-export default MainGestor;
+export default HistoricoAgendamentosProfessor;

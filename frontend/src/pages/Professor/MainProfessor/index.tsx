@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import useAuth from "../../hooks/useAuth";
+import useAuth from "../../../hooks/useAuth";
 import styles from "./styles.module.scss";
-import { AgendamentoProfessorType } from "../../types/AgendamentoProfessorType";
-import api from "../../services/api";
-import AgendamentosProfessor from "../../components/AgendamentosProfessor";
+import { AgendamentoProfessorType } from "../../../types/AgendamentoProfessorType";
+import api from "../../../services/api";
+import AgendamentosProfessor from "../../../components/AgendamentosProfessor";
 import moment from "moment";
 
 function MainProfessor() {

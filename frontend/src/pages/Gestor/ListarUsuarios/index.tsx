@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import { UsuarioType } from "../../types/UsuarioType";
+import { UsuarioType } from "../../../types/UsuarioType";
 import styles from "./styles.module.scss";
-import useAuth from "../../hooks/useAuth";
-import api from "../../services/api";
-import EditarUsuarios from "../../components/EditarUsuarios";
+import useAuth from "../../../hooks/useAuth";
+import api from "../../../services/api";
+import EditarUsuarios from "../../../components/EditarUsuarios";
 
 function ListarUsuarios() {
   const { handleGetToken } = useAuth();

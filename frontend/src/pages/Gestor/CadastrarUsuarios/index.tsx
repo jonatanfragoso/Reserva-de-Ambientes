@@ -1,5 +1,5 @@
 import styles from "./styles.module.scss";
-import CadastrarUsuario from "../../components/CadastrarUsuario";
+import CadastrarUsuario from "../../../components/CadastrarUsuario";
 
 function CadastrarUsuarios() {
   return (
