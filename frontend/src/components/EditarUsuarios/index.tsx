@@ -18,8 +18,8 @@ function EditarUsuarios({ usuario }: IProps) {
       <p>Email: {usuario.email}</p>
       <p>Telefone: {usuario.telefone}</p>
       <p>Matrícula: {usuario.matricula}</p>
-      {usuario.id_funcao === 1 && <p>Função: Professor</p>}
-      {usuario.id_funcao === 2 && <p>Função: Técnico</p>}
+      {usuario.id_funcao === 2 && <p>Função: Professor</p>}
+      {usuario.id_funcao === 1 && <p>Função: Técnico</p>}
       {usuario.id_gestor === 1 && <p>Gestor: Sim</p>}
       {usuario.id_gestor === 2 && <p>Gestor: Não</p>}
       <button onClick={handleNavigate}>Editar</button>
