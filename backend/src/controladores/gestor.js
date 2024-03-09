@@ -203,27 +203,22 @@ const negarSolicitacoes = async (req, res) => {
 
 const editarUsuarios = async (req, res) => {
   const { id } = req.params;
-  const {
+
+  const { nome, email, telefone, matricula, id_funcao, id_gestor, ativo } =
+    req.body;
+
+  console.log(
     nome,
     email,
-    senha,
     telefone,
     matricula,
     id_funcao,
     id_gestor,
     ativo,
-  } = req.body;
+    id
+  );
 
-  if (
-    !nome ||
-    !email ||
-    !senha ||
-    !telefone ||
-    !matricula ||
-    !id_funcao ||
-    !id_gestor ||
-    !ativo
-  ) {
+  if (!nome || !email || !telefone || !matricula || !id_funcao || !id_gestor) {
     return res
       .status(400)
       .json({ mensagem: "Todos os campos são obrigatórios." });
@@ -235,13 +230,14 @@ const editarUsuarios = async (req, res) => {
       email: email,
       telefone: telefone,
       matricula: matricula,
-      id: id_funcao,
+      id_funcao: id_funcao,
       id_gestor: id_gestor,
       ativo: ativo,
     });
 
     return res.status(201).json({ mensagem: "Atualizado com suceosso." });
   } catch (error) {
+    console.log(error.message);
     return res.status(500).json({ mensagem: "Erro interno do servidor." });
   }
 };

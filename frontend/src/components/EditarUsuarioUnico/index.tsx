@@ -3,6 +3,7 @@ import styles from "./styles.module.scss";
 import api from "../../services/api";
 import useAuth from "../../hooks/useAuth";
 import { useNavigate, useParams } from "react-router-dom";
+
 function EditarUsuarioUnico() {
   const [idFuncao, setIdFuncao] = useState(Number);
   const [idGestor, setIdGestor] = useState(Number);
@@ -11,10 +12,23 @@ function EditarUsuarioUnico() {
   const [email, setEmail] = useState(String);
   const [matricula, setMatricula] = useState(String);
   const [telefone, setTelefone] = useState(String);
+  const [ativo, setAtivo] = useState(String);
+  const [ativoBoolean, setAtivoBoolean] = useState(Boolean);
   const { handleGetToken } = useAuth();
   const token = handleGetToken();
   const navigate = useNavigate();
   const { id } = useParams();
+
+  function handleAtivarUsuario(value: string) {
+    if (value === "true") {
+      setAtivoBoolean(true);
+      setAtivo("true");
+    }
+    if (value === "false") {
+      setAtivoBoolean(false);
+      setAtivo("false");
+    }
+  }
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
@@ -32,16 +46,18 @@ function EditarUsuarioUnico() {
       if (token) {
         api.defaults.headers.authorization = `Bearer ${token}`;
       }
-      await api.put("/editar-usuario", {
+      await api.put(`/editar-usuario/${id}`, {
         id_funcao: idFuncao,
         id_gestor: idGestor,
         email: email,
         nome: nome,
         telefone: telefone,
         matricula: matricula,
+        ativo: ativoBoolean,
       });
 
-      navigate("/main-gestor");
+      navigate("/usuarios");
+      return;
     } catch (error) {
       console.log(error);
     }
@@ -60,6 +76,8 @@ function EditarUsuarioUnico() {
       setMatricula(usuario.matricula);
       setIdFuncao(usuario.id_funcao);
       setIdGestor(usuario.id_gestor);
+      setAtivo(usuario.ativo);
+      setAtivoBoolean(usuario.ativo);
     })();
   }, []);
 
@@ -121,6 +139,8 @@ function EditarUsuarioUnico() {
               <option value={2}>Professor</option>
               <option value={1}>Técnico</option>
             </select>
+          </div>
+          <div className={styles.selects}>
             <p>É GESTOR?: </p>
             <select
               name="gestor"
@@ -134,6 +154,21 @@ function EditarUsuarioUnico() {
               <option value={2}>Não</option>
             </select>
           </div>
+          <div className={styles.selects}>
+            <p>ATIVO?: </p>
+            <select
+              name="ativo"
+              id="ativo"
+              required
+              value={ativo}
+              onChange={(e) => handleAtivarUsuario(e.target.value)}
+            >
+              <option value=""></option>
+              <option value="true">Sim</option>
+              <option value="false">Não</option>
+            </select>
+          </div>
+
           <div className={styles.btnCadastro}>
             <button className={styles.btnVerde}>Salvar Alterações</button>
             {/* <button className={styles.btnVermelho} onClick={Cancelar}>

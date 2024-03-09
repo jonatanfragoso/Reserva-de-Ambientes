@@ -36,7 +36,7 @@ rotas.get(
 );
 
 rotas.put(
-  "/editar-usuario",
+  "/editar-usuario/:id",
   gestorMiddleware.verificarGestor,
   gestorController.editarUsuarios
 );
