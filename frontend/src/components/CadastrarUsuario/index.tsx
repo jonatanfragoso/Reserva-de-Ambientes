@@ -3,6 +3,7 @@ import styles from "./styles.module.scss";
 import { useNavigate } from "react-router-dom";
 import api from "../../services/api";
 import useAuth from "../../hooks/useAuth";
+import { Bounce, toast } from "react-toastify";
 // import ptBR from "date-fns/locale/pt-BR";
 
 function CadastrarUsuario() {
@@ -35,7 +36,7 @@ function CadastrarUsuario() {
       if (token) {
         api.defaults.headers.authorization = `Bearer ${token}`;
       }
-      await api.post("/cadastrar-usuario", {
+      const response = await api.post("/cadastrar-usuario", {
         id_funcao: idFuncao,
         id_gestor: idGestor,
         email: email,
@@ -46,6 +47,17 @@ function CadastrarUsuario() {
       });
 
       navigate("/main-gestor");
+      return toast.success(response.data.mensagem, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
     } catch (error) {
       console.log(error);
     }

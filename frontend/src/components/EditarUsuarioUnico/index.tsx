@@ -3,6 +3,7 @@ import styles from "./styles.module.scss";
 import api from "../../services/api";
 import useAuth from "../../hooks/useAuth";
 import { useNavigate, useParams } from "react-router-dom";
+import { Bounce, toast } from "react-toastify";
 
 function EditarUsuarioUnico() {
   const [idFuncao, setIdFuncao] = useState(Number);
@@ -46,7 +47,7 @@ function EditarUsuarioUnico() {
       if (token) {
         api.defaults.headers.authorization = `Bearer ${token}`;
       }
-      await api.put(`/editar-usuario/${id}`, {
+      const response = await api.put(`/editar-usuario/${id}`, {
         id_funcao: idFuncao,
         id_gestor: idGestor,
         email: email,
@@ -57,7 +58,18 @@ function EditarUsuarioUnico() {
       });
 
       navigate("/usuarios");
-      return;
+
+      return toast.success(response.data.mensagem, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
     } catch (error) {
       console.log(error);
     }
@@ -78,6 +90,7 @@ function EditarUsuarioUnico() {
       setIdGestor(usuario.id_gestor);
       setAtivo(usuario.ativo);
       setAtivoBoolean(usuario.ativo);
+      console.log(response);
     })();
   }, []);
 

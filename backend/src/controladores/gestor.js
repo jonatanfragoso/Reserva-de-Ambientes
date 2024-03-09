@@ -235,7 +235,9 @@ const editarUsuarios = async (req, res) => {
       ativo: ativo,
     });
 
-    return res.status(201).json({ mensagem: "Atualizado com suceosso." });
+    return res
+      .status(201)
+      .json({ mensagem: "Usuário atualizado com sucesso!" });
   } catch (error) {
     console.log(error.message);
     return res.status(500).json({ mensagem: "Erro interno do servidor." });
