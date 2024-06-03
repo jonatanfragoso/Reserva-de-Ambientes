@@ -135,7 +135,7 @@ function SolicitarAgendamento() {
             <option value="07:30">07:30 às 09:10</option>
             <option value="09:20">09:20 às 11:00</option>
             <option value="11:10">11:10 às 13:20</option>
-            <option value="13:40">13:30 às 14:50</option>
+            <option value="13:30">13:30 às 14:50</option>
             <option value="15:00">15:00 às 16:40</option>
           </select>
           <p>REPETIR HORÁRIO: </p>
@@ -162,7 +162,7 @@ function SolicitarAgendamento() {
             <option value={2}>Lab 2</option>
             <option value={3}>Lab 3</option>
             <option value={4}>Lab 4</option>
-            <option value={5}>Lab 5</option>
+            <option value={12}>Lab 5</option>
           </select>
           <div>
             <div className={styles.divBotoes}>

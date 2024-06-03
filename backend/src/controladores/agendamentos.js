@@ -184,6 +184,17 @@ const reservarAmbiente = async (req, res) => {
         });
         aux += 7;
       }
+      reserva = await knex("reservas").insert({
+        hora_inicio: hora_inicio,
+        hora_fim: hora_fim,
+        data_inicio: data_inicial,
+        data_fim: data_final,
+        id_usuario: user.id,
+        id_local: local,
+        situacao: "Pendente",
+        dia_semana: dia_semana,
+        nome_usuario: user.nome,
+      });
       return res.status(201).json({
         dia_semana: dia_semana,
         hora_incio: hora_inicio,
@@ -236,6 +247,19 @@ const reservarAmbiente = async (req, res) => {
       dia_semana: dia_semana,
       nome_usuario: user.nome,
     });
+
+    reserva = await knex("reservas").insert({
+      hora_inicio: hora_inicio,
+      hora_fim: hora_fim,
+      data_inicio: `${dataBanco[2]}/${dataBanco[1]}/${dataBanco[0]}`,
+      data_fim: `${dataBanco[2]}/${dataBanco[1]}/${dataBanco[0]}`,
+      id_usuario: user.id,
+      id_local: local,
+      situacao: "Pendente",
+      dia_semana: dia_semana,
+      nome_usuario: user.nome,
+    });
+
     return res.status(201).json({
       dia_semana: dia_semana,
       hora_incio: hora_inicio,

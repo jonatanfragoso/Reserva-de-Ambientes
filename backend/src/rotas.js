@@ -8,7 +8,7 @@ const agendamentosController = require("./controladores/agendamentos");
 const gestorController = require("./controladores/gestor");
 
 rotas.post("/login", usuariosController.login);
-rotas.post("/cadastrar-usuario", usuariosController.cadastrarUsuario);
+// rotas.post("/cadastrar-usuario", usuariosController.cadastrarUsuario);
 
 rotas.use(autenticacaoMiddleware.verificarUsuarioLogado);
 
@@ -22,6 +22,8 @@ rotas.post(
 rotas.get("/obter-perfil", usuariosController.obterPerfil);
 
 //Rotas de Gestor
+
+rotas.post("/cadastrar-local", locaisController.cadastrarLocal);
 
 rotas.get(
   "/usuarios",

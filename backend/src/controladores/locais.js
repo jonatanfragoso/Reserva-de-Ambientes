@@ -25,7 +25,32 @@ const obterLocal = async (req, res) => {
   }
 };
 
+const cadastrarLocal = async (req, res) => {
+  try {
+    const { descricao } = req.body;
+
+    if (!descricao) {
+      return res.status(400).json({ mensagem: "Nome do local é Obrigatório" });
+    }
+
+    const nomeValido = await knex("locais").whereILike("descricao", descricao);
+    if (nomeValido.length > 0) {
+      return res.status(400).json({ mensagem: "Local já cadastrado." });
+    }
+
+    await knex("locais").insert({
+      descricao: descricao,
+    });
+
+    return res.status(201).json({ mensagem: "Local cadastrado com sucesso." });
+  } catch (error) {
+    console.log(error.message);
+    return res.status(500).json({ mensagem: "Erro interno do servidor." });
+  }
+};
+
 module.exports = {
   listarLocais,
   obterLocal,
+  cadastrarLocal,
 };

@@ -1,10 +1,12 @@
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import styles from "./styles.module.scss";
 import { useNavigate } from "react-router-dom";
 import api from "../../services/api";
 import useAuth from "../../hooks/useAuth";
 import { Bounce, toast } from "react-toastify";
 // import ptBR from "date-fns/locale/pt-BR";
+import { IMaskInput } from "react-imask";
+import validator from "validator";
 
 function CadastrarUsuario() {
   const [idFuncao, setIdFuncao] = useState(0);
@@ -18,6 +20,8 @@ function CadastrarUsuario() {
   const navigate = useNavigate();
   const { handleGetToken } = useAuth();
   const token = handleGetToken();
+
+  useEffect(() => {}, [email]);
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
@@ -66,55 +70,70 @@ function CadastrarUsuario() {
   return (
     <div className={styles.container}>
       <div className={styles.titulo}>
-        <h1>Cadastrar Usuario</h1>
+        <h1>Cadastrar Usuário</h1>
       </div>
       <div className={styles.divForm}>
         <form onSubmit={handleSubmit}>
-          <p>NOME COMPLETO: </p>
-          <input
-            type="text"
-            placeholder="Nome"
-            value={nome}
-            onChange={(e) => setNome(e.target.value)}
-            required
-          />
-          <p>EMAIL: </p>
-          <input
-            type="text"
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-          <p>SENHA: </p>
+          <div className={styles.noDivision}>
+            <label htmlFor="">NOME COMPLETO:</label>
+            <input
+              type="text"
+              placeholder="Nome"
+              value={nome}
+              onChange={(e) => setNome(e.target.value)}
+              required
+            />
+          </div>
+          <div className={styles.divisao}>
+            <div className={styles.divisao2}>
+              <label htmlFor="">EMAIL:</label>
+              <input
+                type="email"
+                placeholder="Email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+              {/* {!validator.isEmail(email) && <p>Insira um email válido!</p>} */}
+            </div>
 
-          <input
-            type="password"
-            placeholder="Senha"
-            value={senha}
-            onChange={(e) => setSenha(e.target.value)}
-            required
-          />
+            <div className={styles.divisao2}>
+              <label htmlFor="">SENHA:</label>
+              <input
+                type="password"
+                placeholder="Senha"
+                value={senha}
+                onChange={(e) => setSenha(e.target.value)}
+                required
+              />
+            </div>
+          </div>
+          <div className={styles.divisao}>
+            <div className={styles.divisao2}>
+              <label htmlFor="">TELEFONE: </label>
+              <IMaskInput
+                type="text"
+                placeholder="Telefone: Ex: 99 99999-9988"
+                value={telefone}
+                mask="(00) 0 0000-0000"
+                onChange={(e) => setTelefone(e.target.value)}
+                required
+              ></IMaskInput>
+            </div>
+            <div className={styles.divisao2}>
+              <label htmlFor="">MATRÍCULA: </label>
+              <input
+                type="text"
+                placeholder="Matricula"
+                value={matricula}
+                onChange={(e) => setMatricula(e.target.value)}
+                required
+              />
+            </div>
+          </div>
 
-          <p>TELEFONE: </p>
-          <input
-            type="text"
-            placeholder="Telefone: Ex: 99 99999-9988"
-            value={telefone}
-            onChange={(e) => setTelefone(e.target.value)}
-            required
-          />
-          <p>MATRÍCULA: </p>
-          <input
-            type="text"
-            placeholder="Matricula"
-            value={matricula}
-            onChange={(e) => setMatricula(e.target.value)}
-            required
-          />
-
-          <div className={styles.selects}>
-            <p>FUNÇÃO: </p>
+          <div className={styles.divisao}>
+            <label htmlFor="">FUNÇÃO:</label>
             <select
               name="Funções"
               id="funcoes"
@@ -125,7 +144,8 @@ function CadastrarUsuario() {
               <option value={2}>Professor</option>
               <option value={1}>Técnico</option>
             </select>
-            <p>É GESTOR?: </p>
+
+            <label htmlFor="">É GESTOR?</label>
             <select
               name="Gestor"
               id="gestor"
@@ -139,9 +159,6 @@ function CadastrarUsuario() {
           </div>
           <div className={styles.btnCadastro}>
             <button className={styles.btnVerde}>Cadastrar</button>
-            {/* <button className={styles.btnVermelho} onClick={Cancelar}>
-                Cancelar
-              </button> */}
           </div>
         </form>
       </div>
