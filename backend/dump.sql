@@ -32,6 +32,7 @@ create table "agendamentos" (
   hora_inicio time not null,
   hora_fim time not null,
   data_agendamento date not null,
+  data_solicitacao date not null,
   dia_semana varchar(50),
   situacao varchar(50) not null,
   id_usuario integer not null,
@@ -54,6 +55,9 @@ create table "reservas" (
   situacao varchar(50) not null,
   data_inicio date not null,
   data_fim date not null,
+  data_solicitacao date not null,
+  nome_gestor varchar(100),
+  id_gestor integer,
   foreign key (id_usuario) references usuarios (id),
   foreign key (id_local) references locais (id)
 );

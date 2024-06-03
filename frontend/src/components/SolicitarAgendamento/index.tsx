@@ -22,6 +22,7 @@ function SolicitarAgendamento() {
   const [repetir, setRepetir] = useState(false);
   const [startDate, setStartDate] = useState(new Date());
   const [startEndDate, setStartEndDate] = useState(new Date());
+  const [hoje, setHoje] = useState(moment().locale("en").format("L"));
 
   const navigate = useNavigate();
   const { handleGetToken } = useAuth();
@@ -38,6 +39,9 @@ function SolicitarAgendamento() {
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
+    const formatHoje = hoje.split("/");
+    const data_solicitacao = `${formatHoje[2]}/${formatHoje[1]}/${formatHoje[0]}`;
+    setHoje(data_solicitacao);
 
     try {
       console.log("data inicio:", dataInicio);
@@ -62,6 +66,7 @@ function SolicitarAgendamento() {
         hora_fim: horaFim,
         local: idLocal,
         repetir: repetir,
+        data_solicitacao: data_solicitacao,
       });
 
       navigate("/main-professor");

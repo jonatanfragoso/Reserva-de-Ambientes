@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 interface IProps {
   agendamento: AgendamentoType;
 }
+
 function Agendamentos({ agendamento }: IProps) {
   const navigate = useNavigate();
   let repetir = true;
@@ -22,6 +23,8 @@ function Agendamentos({ agendamento }: IProps) {
   if (data_inicio_formatada === data_fim_formatada) {
     repetir = false;
   }
+  console.log(agendamento);
+
   //formatando hora para padrão pt-br
   const hora_inicio = agendamento.hora_inicio.split(":");
   const hora_fim = agendamento.hora_fim.split(":");

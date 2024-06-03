@@ -5,8 +5,18 @@ const momento = moment();
 const reservarAmbiente = async (req, res) => {
   const usuario = req.usuario;
   const { senha: _, ...user } = usuario[0];
-  const { data_inicial, data_final, hora_inicio, hora_fim, local, repetir } =
-    req.body;
+  const {
+    data_inicial,
+    data_final,
+    hora_inicio,
+    hora_fim,
+    local,
+    repetir,
+    data_solicitacao,
+  } = req.body;
+
+  const hoje = moment().locale("en").format("L");
+  console.log(hoje);
 
   let dataQuebrada = data_inicial.split("/");
   let dataQuebrada2 = data_final.split("/");
@@ -181,6 +191,7 @@ const reservarAmbiente = async (req, res) => {
           situacao: "Pendente",
           dia_semana: dia_semana,
           nome_usuario: user.nome,
+          data_solicitacao: data_solicitacao,
         });
         aux += 7;
       }
@@ -194,6 +205,7 @@ const reservarAmbiente = async (req, res) => {
         situacao: "Pendente",
         dia_semana: dia_semana,
         nome_usuario: user.nome,
+        data_solicitacao: data_solicitacao,
       });
       return res.status(201).json({
         dia_semana: dia_semana,
@@ -202,6 +214,8 @@ const reservarAmbiente = async (req, res) => {
         local: nomeLocal.descricao,
         data_inicial: data_inicial,
         data_final: data_final,
+        data_agendamento: `${dataBanco[2]}/${dataBanco[1]}/${dataBanco[0]}`,
+        data_solicitacao: data_solicitacao,
       });
     }
 
@@ -246,6 +260,7 @@ const reservarAmbiente = async (req, res) => {
       situacao: "Pendente",
       dia_semana: dia_semana,
       nome_usuario: user.nome,
+      data_solicitacao: data_solicitacao,
     });
 
     reserva = await knex("reservas").insert({
@@ -258,6 +273,7 @@ const reservarAmbiente = async (req, res) => {
       situacao: "Pendente",
       dia_semana: dia_semana,
       nome_usuario: user.nome,
+      data_solicitacao: data_solicitacao,
     });
 
     return res.status(201).json({
@@ -266,6 +282,8 @@ const reservarAmbiente = async (req, res) => {
       hora_fim: hora_fim,
       local: nomeLocal.descricao,
       data: data_inicial,
+      data_agendamento: `${dataBanco[2]}/${dataBanco[1]}/${dataBanco[0]}`,
+      data_solicitacao: data_solicitacao,
     });
   } catch (error) {
     console.log(error.message);

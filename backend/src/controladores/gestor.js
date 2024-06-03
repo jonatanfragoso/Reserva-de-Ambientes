@@ -4,53 +4,58 @@ const jwt = require("jsonwebtoken");
 
 const obterSolicitacoesAgendamentosPendentes = async (req, res) => {
   try {
-    const listaSolicitacoes = await knex("agendamentos")
+    const listaSolicitacoes = await knex("reservas")
       .select(
         "id_usuario",
         "id_local",
         "dia_semana",
         "hora_inicio",
         "hora_fim",
-        "situacao"
+        "situacao",
+        "data_inicio",
+        "data_fim"
       )
-      .min("data_agendamento", { as: "data_inicio" })
-      .max("data_agendamento", { as: "data_fim" })
-      .groupBy(
-        "id_usuario",
-        "id_local",
-        "dia_semana",
-        "hora_inicio",
-        "hora_fim",
-        "situacao"
-      )
+      // .min("data_agendamento", { as: "data_inicio" })
+      // .max("data_agendamento", { as: "data_fim" })
+      // .groupBy(
+      //   "id_usuario",
+      //   "id_local",
+      //   "dia_semana",
+      //   "hora_inicio",
+      //   "hora_fim",
+      //   "situacao"
+      // )
       .whereILike("situacao", "pendente");
     return res.status(200).json(listaSolicitacoes);
   } catch (error) {
+    console.log(error.message);
     return res.status(500).json({ mensagem: "Erro interno do servidor." });
   }
 };
 
 const obterSolicitacoesAgendamentosNegadas = async (req, res) => {
   try {
-    const listaSolicitacoes = await knex("agendamentos")
+    const listaSolicitacoes = await knex("reservas")
       .select(
         "id_usuario",
         "id_local",
         "dia_semana",
         "hora_inicio",
         "hora_fim",
-        "situacao"
+        "situacao",
+        "data_inicio",
+        "data_fim"
       )
-      .min("data_agendamento", { as: "data_inicio" })
-      .max("data_agendamento", { as: "data_fim" })
-      .groupBy(
-        "id_usuario",
-        "id_local",
-        "dia_semana",
-        "hora_inicio",
-        "hora_fim",
-        "situacao"
-      )
+      // .min("data_agendamento", { as: "data_inicio" })
+      // .max("data_agendamento", { as: "data_fim" })
+      // .groupBy(
+      //   "id_usuario",
+      //   "id_local",
+      //   "dia_semana",
+      //   "hora_inicio",
+      //   "hora_fim",
+      //   "situacao"
+      // )
       .whereILike("situacao", "negado");
     return res.status(200).json(listaSolicitacoes);
   } catch (error) {
@@ -60,25 +65,27 @@ const obterSolicitacoesAgendamentosNegadas = async (req, res) => {
 
 const obterSolicitacoesAgendamentosAceitas = async (req, res) => {
   try {
-    const listaSolicitacoes = await knex("agendamentos")
+    const listaSolicitacoes = await knex("reservas")
       .select(
         "id_usuario",
         "id_local",
         "dia_semana",
         "hora_inicio",
         "hora_fim",
-        "situacao"
+        "situacao",
+        "data_inicio",
+        "data_fim"
       )
-      .min("data_agendamento", { as: "data_inicio" })
-      .max("data_agendamento", { as: "data_fim" })
-      .groupBy(
-        "id_usuario",
-        "id_local",
-        "dia_semana",
-        "hora_inicio",
-        "hora_fim",
-        "situacao"
-      )
+      // .min("data_agendamento", { as: "data_inicio" })
+      // .max("data_agendamento", { as: "data_fim" })
+      // .groupBy(
+      //   "id_usuario",
+      //   "id_local",
+      //   "dia_semana",
+      //   "hora_inicio",
+      //   "hora_fim",
+      //   "situacao"
+      // )
       .whereILike("situacao", "aceito");
     return res.status(200).json(listaSolicitacoes);
   } catch (error) {
@@ -99,6 +106,7 @@ const aceitarSolicitacoes = async (req, res) => {
     hora_fim,
     dia_semana,
     local,
+    data_solicitacao,
   } = req.body;
 
   if (
@@ -136,8 +144,23 @@ const aceitarSolicitacoes = async (req, res) => {
       .andWhereILike("situacao", "Pendente")
       .andWhereILike("dia_semana", dia_semana);
 
+    await knex("reservas")
+      .update({
+        nome_gestor: nome_gestor[0].nome,
+        id_gestor: id,
+        situacao: "Aceito",
+      })
+
+      .andWhere("hora_inicio", ">=", hora_inicio)
+      .andWhere("hora_fim", "<=", hora_fim)
+      .andWhere({ id_usuario: id_solicitante })
+      .andWhere({ id_local: local })
+      .andWhereILike("situacao", "Pendente")
+      .andWhereILike("dia_semana", dia_semana);
+
     return res.status(204).json();
   } catch (error) {
+    console.log(error.message);
     return res.status(500).json({ mensagem: "Erro interno do servidor." });
   }
 };
@@ -188,6 +211,19 @@ const negarSolicitacoes = async (req, res) => {
       })
       .where("data_agendamento", ">=", data_inicial_formatada)
       .andWhere("data_agendamento", "<=", data_final_formatada)
+      .andWhere("hora_inicio", ">=", hora_inicio)
+      .andWhere("hora_fim", "<=", hora_fim)
+      .andWhere({ id_usuario: id_solicitante })
+      .andWhere({ id_local: local })
+      .andWhereILike("situacao", "Pendente")
+      .andWhereILike("dia_semana", dia_semana);
+
+    await knex("reservas")
+      .update({
+        nome_gestor: nome_gestor[0].nome,
+        id_gestor: id,
+        situacao: "Negado",
+      })
       .andWhere("hora_inicio", ">=", hora_inicio)
       .andWhere("hora_fim", "<=", hora_fim)
       .andWhere({ id_usuario: id_solicitante })
