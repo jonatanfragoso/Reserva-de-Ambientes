@@ -16,7 +16,6 @@ const reservarAmbiente = async (req, res) => {
   } = req.body;
 
   const hoje = moment().locale("en").format("L");
-  console.log(hoje);
 
   let dataQuebrada = data_inicial.split("/");
   let dataQuebrada2 = data_final.split("/");

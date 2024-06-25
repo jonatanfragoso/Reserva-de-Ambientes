@@ -91,6 +91,8 @@ rotas.get(
   usuariosController.listarHistoricoAgendamentos
 );
 
+rotas.get("/obter-ultima-pagina", gestorController.obterLastPage);
+
 rotas.put("/atualizar-perfil", usuariosController.atualizarPerfil);
 
 rotas.post("/agendamentos", agendamentosController.reservarAmbiente);

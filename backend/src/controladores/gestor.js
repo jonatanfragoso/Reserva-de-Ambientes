@@ -2,7 +2,22 @@ const knex = require("../conexao");
 const senhaJWT = require("../senhaJWT");
 const jwt = require("jsonwebtoken");
 
+const obterLastPage = async (req, res) => {
+  const limit = 5;
+  try {
+    const contador = await knex("reservas").whereILike("situacao", "pendente");
+    const lastPage = parseInt(contador.length / limit);
+    return res.status(200).json(lastPage);
+  } catch (error) {
+    console.log(error.message);
+    return res.status(500).json({ mensagem: "Erro interno do servidor." });
+  }
+};
+
 const obterSolicitacoesAgendamentosPendentes = async (req, res) => {
+  const { page } = req.query;
+  const offset = (page - 1) * 5;
+  const limit = 5;
   try {
     const listaSolicitacoes = await knex("reservas")
       .select(
@@ -15,17 +30,9 @@ const obterSolicitacoesAgendamentosPendentes = async (req, res) => {
         "data_inicio",
         "data_fim"
       )
-      // .min("data_agendamento", { as: "data_inicio" })
-      // .max("data_agendamento", { as: "data_fim" })
-      // .groupBy(
-      //   "id_usuario",
-      //   "id_local",
-      //   "dia_semana",
-      //   "hora_inicio",
-      //   "hora_fim",
-      //   "situacao"
-      // )
-      .whereILike("situacao", "pendente");
+      .whereILike("situacao", "pendente")
+      .limit(limit)
+      .offset(offset);
     return res.status(200).json(listaSolicitacoes);
   } catch (error) {
     console.log(error.message);
@@ -59,6 +66,7 @@ const obterSolicitacoesAgendamentosNegadas = async (req, res) => {
       .whereILike("situacao", "negado");
     return res.status(200).json(listaSolicitacoes);
   } catch (error) {
+    console.log(error.message);
     return res.status(500).json({ mensagem: "Erro interno do servidor." });
   }
 };
@@ -288,4 +296,5 @@ module.exports = {
   negarSolicitacoes,
   obterPerfil,
   editarUsuarios,
+  obterLastPage,
 };

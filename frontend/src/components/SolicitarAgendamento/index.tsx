@@ -40,7 +40,7 @@ function SolicitarAgendamento() {
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
     const formatHoje = hoje.split("/");
-    const data_solicitacao = `${formatHoje[2]}/${formatHoje[1]}/${formatHoje[0]}`;
+    const data_solicitacao = `${formatHoje[1]}/${formatHoje[0]}/${formatHoje[2]}`;
     setHoje(data_solicitacao);
 
     try {
@@ -50,6 +50,8 @@ function SolicitarAgendamento() {
       console.log(horaFim);
       console.log(idLocal);
       console.log(repetir);
+      console.log("hoje: ", hoje);
+      console.log("data solocitacao: ", data_solicitacao);
 
       // if (!dataInicio || !dataFim || idLocal || horaFim || horaInicio) {
       //   throw new Error("Todos os campos são obrigatórios.");
