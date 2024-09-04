@@ -4,6 +4,7 @@ import styles from "./styles.module.scss";
 import api from "../../services/api";
 import { useNavigate } from "react-router-dom";
 import Modal from "react-modal";
+import { Bounce, toast } from "react-toastify";
 
 function AtualizarPerfilUsuario() {
   const { handleGetToken } = useAuth();
@@ -45,8 +46,29 @@ function AtualizarPerfilUsuario() {
         telefone: telefone,
       });
       navigate("/configuracoes");
+      return toast.success(response.data.mensagem, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
     } catch (error) {
-      console.log(error);
+      return toast.error(error.response.data.mensagem, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
     }
   }
 

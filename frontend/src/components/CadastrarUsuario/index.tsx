@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import api from "../../services/api";
 import useAuth from "../../hooks/useAuth";
 import { Bounce, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 // import ptBR from "date-fns/locale/pt-BR";
 import { IMaskInput } from "react-imask";
 import validator from "validator";
@@ -63,7 +64,17 @@ function CadastrarUsuario() {
         transition: Bounce,
       });
     } catch (error) {
-      console.log(error);
+      return toast.error(error.response.data.mensagem, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
     }
   }
 

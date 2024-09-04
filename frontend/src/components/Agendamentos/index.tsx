@@ -4,6 +4,7 @@ import { AgendamentoType } from "../../types/AgendamentoType";
 import styles from "./styles.module.scss";
 import moment from "moment";
 import { useNavigate } from "react-router-dom";
+import { Bounce, toast } from "react-toastify";
 
 interface IProps {
   agendamento: AgendamentoType;
@@ -76,8 +77,29 @@ function Agendamentos({ agendamento }: IProps) {
         dia_semana: agendamento.dia_semana,
       });
       navigate("/");
+      return toast.success("Solicitação Aceita.", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
     } catch (error) {
-      console.log(error);
+      return toast.error(error.response.data.mensagem, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
     }
   }
 
@@ -94,8 +116,29 @@ function Agendamentos({ agendamento }: IProps) {
         dia_semana: agendamento.dia_semana,
       });
       navigate("/");
+      return toast.success("Solicitação Negada.", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
     } catch (error) {
-      console.log(error);
+      return toast.error(error.response.data.mensagem, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
     }
   }
 }

@@ -28,7 +28,7 @@ function MainGestor() {
       setLastPage(`${ultimaPagina.data}`);
       setAgendamentosAceitos([...response.data]);
     })();
-  }, [page]);
+  }, [page, lastPage]);
 
   return (
     <>

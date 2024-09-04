@@ -96,7 +96,7 @@ const cadastrarUsuario = async (req, res) => {
       matricula: matricula,
     });
     if (matriculaValida.length > 0) {
-      return res.status(400).json({ mensagem: "Matricula já cadastrada." });
+      return res.status(400).json({ mensagem: "Matrícula já cadastrada." });
     }
 
     await knex("usuarios").insert({

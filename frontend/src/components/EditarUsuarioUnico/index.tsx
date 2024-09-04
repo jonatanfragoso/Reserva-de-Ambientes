@@ -71,7 +71,17 @@ function EditarUsuarioUnico() {
         transition: Bounce,
       });
     } catch (error) {
-      console.log(error);
+      return toast.error(error.response.data.mensagem, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
     }
   }
 
@@ -90,7 +100,6 @@ function EditarUsuarioUnico() {
       setIdGestor(usuario.id_gestor);
       setAtivo(usuario.ativo);
       setAtivoBoolean(usuario.ativo);
-      console.log(response);
     })();
   }, []);
 

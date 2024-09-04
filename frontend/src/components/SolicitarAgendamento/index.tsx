@@ -3,7 +3,7 @@ import api from "../../services/api";
 import styles from "./styles.module.scss";
 import ReactDatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-
+import { Bounce, toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 import moment from "moment";
@@ -72,8 +72,29 @@ function SolicitarAgendamento() {
       });
 
       navigate("/main-professor");
+      return toast.success("Solicitação feita com sucesso!", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
     } catch (error) {
-      console.log(error);
+      return toast.error(error.response.data.mensagem, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
     }
   }
 
