@@ -58,6 +58,19 @@ function HeaderGestor() {
           </NavLink>
         </div>
         <div className={styles.navLinks}>
+          <FontAwesomeIcon icon={faPlus} />
+          <NavLink
+            to="/cadastrar-ambientes"
+            style={({ isActive }) => {
+              return {
+                color: isActive ? "green" : "inherit",
+              };
+            }}
+          >
+            Cadastrar Ambientes
+          </NavLink>
+        </div>
+        <div className={styles.navLinks}>
           <FontAwesomeIcon icon={faChalkboard} />
           <NavLink to="/main-professor">Página do Professor</NavLink>
         </div>

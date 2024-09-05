@@ -10,6 +10,7 @@ import moment from "moment";
 
 import { registerLocale, setDefaultLocale } from "react-datepicker";
 import ptBR from "date-fns/locale/pt-BR";
+import { LocaisType } from "../../types/LocaisType";
 registerLocale("pt-BR", ptBR);
 
 function SolicitarAgendamento() {
@@ -23,6 +24,7 @@ function SolicitarAgendamento() {
   const [startDate, setStartDate] = useState(new Date());
   const [startEndDate, setStartEndDate] = useState(new Date());
   const [hoje, setHoje] = useState(moment().locale("en").format("L"));
+  const [locais, setLocais] = useState<LocaisType[]>([]);
 
   const navigate = useNavigate();
   const { handleGetToken } = useAuth();
@@ -34,6 +36,12 @@ function SolicitarAgendamento() {
       setDataFim(moment(startDate).format("DD/MM/yyyy"));
       setStartEndDate(startDate);
       setStartDate(startDate);
+      if (token) {
+        api.defaults.headers.authorization = `Bearer ${token}`;
+      }
+      const response = await api.get<LocaisType[]>("/locais");
+
+      setLocais([...response.data.listaLocais]);
     })();
   }, []);
 
@@ -52,10 +60,6 @@ function SolicitarAgendamento() {
       console.log(repetir);
       console.log("hoje: ", hoje);
       console.log("data solocitacao: ", data_solicitacao);
-
-      // if (!dataInicio || !dataFim || idLocal || horaFim || horaInicio) {
-      //   throw new Error("Todos os campos são obrigatórios.");
-      // }
 
       if (token) {
         api.defaults.headers.authorization = `Bearer ${token}`;
@@ -129,16 +133,6 @@ function SolicitarAgendamento() {
     }
   }
 
-  // function handleCancelar() {
-  //   // setDataInicio(moment(startDate).format("DD/MM/yyyy"));
-  //   // setDataFim(moment(startDate).format("DD/MM/yyyy"));
-  //   setStartEndDate(startDate);
-  //   setStartDate(startDate);
-  //   setHoraInicio("");
-  //   setHoraFim("");
-  //   setRepetir(false);
-  // }
-
   return (
     <div className={styles.container}>
       <div className={styles.titulo}>
@@ -186,11 +180,17 @@ function SolicitarAgendamento() {
             onChange={(e) => setIdLocal(parseInt(e.target.value))}
           >
             <option value=""></option>
+            {locais.map((local) => (
+              <option key={local.id} value={local.id}>
+                {local.descricao}
+              </option>
+            ))}
+            {/* <option value=""></option>
             <option value={1}>Lab 1</option>
             <option value={2}>Lab 2</option>
             <option value={3}>Lab 3</option>
             <option value={4}>Lab 4</option>
-            <option value={12}>Lab 5</option>
+            <option value={12}>Lab 5</option> */}
           </select>
           <div>
             <div className={styles.divBotoes}>

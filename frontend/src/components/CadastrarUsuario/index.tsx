@@ -7,7 +7,7 @@ import { Bounce, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 // import ptBR from "date-fns/locale/pt-BR";
 import { IMaskInput } from "react-imask";
-import validator from "validator";
+// import validator from "validator";
 
 function CadastrarUsuario() {
   const [idFuncao, setIdFuncao] = useState(0);

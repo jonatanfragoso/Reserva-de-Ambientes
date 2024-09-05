@@ -11,6 +11,7 @@ import SolicitarAgendamento from "./components/SolicitarAgendamento";
 import AtualizarPerfil from "./pages/AtualizarPerfil";
 import ListarUsuarios from "./pages/Gestor/ListarUsuarios";
 import EditarUsuarioUnico from "./components/EditarUsuarioUnico";
+import CadastrarLocais from "./pages/Gestor/CadastrarLocais";
 
 interface IProps {
   redirectTo: string;
@@ -65,6 +66,10 @@ function MainRoutes() {
           <Route
             path="/usuarios/:id"
             element={<EditarUsuarioUnico></EditarUsuarioUnico>}
+          ></Route>
+          <Route
+            path="/cadastrar-ambientes"
+            element={<CadastrarLocais></CadastrarLocais>}
           ></Route>
         </Route>
       </Route>
