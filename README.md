@@ -9,3 +9,4 @@ Grupo Composto pelo Alunos:
     Jonatan Fragoso
     Mychelle Savoff
     Cristian Moura
+    João Vitor
