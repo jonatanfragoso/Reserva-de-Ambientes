@@ -4,7 +4,6 @@ import styles from "./styles.module.scss";
 import useAuth from "../../../hooks/useAuth";
 import api from "../../../services/api";
 import EditarUsuarios from "../../../components/EditarUsuarios";
-import { useParams } from "react-router-dom";
 
 function ListarUsuarios() {
   const { handleGetToken } = useAuth();
