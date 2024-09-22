@@ -39,7 +39,16 @@ const login = async (req, res) => {
 };
 
 const listarUsuarios = async (req, res) => {
+  const { filtro } = req.query;
   try {
+    console.log(filtro);
+    if (filtro) {
+      const usuarios = await knex("usuarios")
+        .where("nome", "ilike", `%${filtro}%`)
+        .orWhere("email", "ilike", `%${filtro}%`)
+        .orWhere("matricula", "ilike", `%${filtro}%`);
+      return res.status(200).json(usuarios);
+    }
     const usuarios = await knex("usuarios").debug();
 
     return res.status(200).json(usuarios);
