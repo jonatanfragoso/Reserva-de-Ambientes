@@ -20,3 +20,25 @@
     padding: 16px;
   }
 }
+
+.filtro {
+  display: flex;
+  align-items: center;
+  border-radius: 25px;
+  max-height: 40px;
+  width: 30%;
+  max-width: 30%;
+  background-color: aliceblue;
+
+  input {
+    background-color: transparent;
+    border-radius: 25px;
+    height: 100%;
+    border: none;
+    outline: none;
+  }
+  .lupa {
+    height: 50%;
+    margin-right: 15px;
+  }
+}

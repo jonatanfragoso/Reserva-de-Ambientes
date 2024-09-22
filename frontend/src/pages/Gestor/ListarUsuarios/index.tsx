@@ -4,6 +4,8 @@ import styles from "./styles.module.scss";
 import useAuth from "../../../hooks/useAuth";
 import api from "../../../services/api";
 import EditarUsuarios from "../../../components/EditarUsuarios";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 
 function ListarUsuarios() {
   const { handleGetToken } = useAuth();
@@ -35,14 +37,18 @@ function ListarUsuarios() {
     <div className={styles.container}>
       <div className={styles.divAgendamentos}>
         <h1>Usuários do Sistema</h1>
-        <div>
+        <div className={styles.filtro}>
           <input
             type="text"
-            placeholder="Pesquisar: Matrícula, Nome, ou Email..."
+            placeholder="Buscar Usuário..."
             name="filtro"
             value={filtro}
             onChange={(e) => setFiltragem(e.target.value)}
           />
+          <FontAwesomeIcon
+            className={styles.lupa}
+            icon={faMagnifyingGlass}
+          ></FontAwesomeIcon>
         </div>
 
         {usuarios.map((usuario) => (
