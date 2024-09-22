@@ -4,6 +4,7 @@ import api from "../../services/api";
 import { FormEvent, useEffect, useState } from "react";
 import useAuth from "../../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 function SignIn() {
   const navigate = useNavigate();
@@ -33,7 +34,16 @@ function SignIn() {
       if (id_gestor == 2) navigate("/main-professor");
       if (id_gestor == 1) navigate("/main-gestor");
     } catch (error) {
-      console.log(error);
+      return toast.error(error.response.data.mensagem, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
     }
   }
 
@@ -49,7 +59,7 @@ function SignIn() {
         <img src={Logo} alt="logo" />
         <form onSubmit={handleSubmit}>
           <input
-            type="text"
+            type="email"
             placeholder="E-mail"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
