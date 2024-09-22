@@ -44,6 +44,7 @@ function ListarUsuarios() {
             name="filtro"
             value={filtro}
             onChange={(e) => setFiltragem(e.target.value)}
+            autoComplete="off"
           />
           <FontAwesomeIcon
             className={styles.lupa}
