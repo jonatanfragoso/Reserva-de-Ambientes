@@ -80,6 +80,12 @@ rotas.put(
   gestorController.editarUsuarios
 );
 
+rotas.get("/obter-ultima-pagina", gestorController.obterLastPage);
+rotas.get(
+  "/obter-ultima-pagina-usuarios",
+  gestorController.obterLastPageUsuarios
+);
+
 //Rotas de professor
 rotas.get(
   "/obter-proximos-agendamentos",
@@ -91,8 +97,19 @@ rotas.get(
   usuariosController.listarHistoricoAgendamentos
 );
 
-rotas.get("/obter-ultima-pagina", gestorController.obterLastPage);
+rotas.get(
+  "/obter-ultima-pagina-usuarios",
+  gestorController.obterLastPageUsuarios
+);
+rotas.get(
+  "/obter-ultima-pagina-proximos-encontros",
+  usuariosController.obterLastPageProximosEncontros
+);
 
+rotas.get(
+  "/obter-ultima-pagina-historico-agendamentos",
+  usuariosController.obterLastPageHistoricoAgendamentos
+);
 rotas.put("/atualizar-perfil", usuariosController.atualizarPerfil);
 
 rotas.post("/agendamentos", agendamentosController.reservarAmbiente);

@@ -9,6 +9,9 @@ import moment from "moment";
 function MainProfessor() {
   const { handleGetToken } = useAuth();
   const token = handleGetToken();
+  const [page, setPage] = useState(1);
+  const [lastPage, setLastPage] = useState("");
+
   const [agendamentosAceitos, setAgendamentosAceitos] = useState<
     AgendamentoProfessorType[]
   >([]);
@@ -19,12 +22,15 @@ function MainProfessor() {
         api.defaults.headers.authorization = `Bearer ${token}`;
       }
       const response = await api.get<AgendamentoProfessorType[]>(
-        "/obter-proximos-agendamentos"
+        `/obter-proximos-agendamentos?page=${page}`
       );
-
+      const ultimaPagina = await api.get(
+        "/obter-ultima-pagina-proximos-encontros"
+      );
+      setLastPage(`${ultimaPagina.data}`);
       setAgendamentosAceitos([...response.data]);
     })();
-  }, []);
+  }, [page, lastPage]);
 
   // const aux1 = new Date();
   // const aux2 = aux1.toString();
@@ -47,6 +53,17 @@ function MainProfessor() {
             key={index}
           ></AgendamentosProfessor>
         ))}
+        <div className={styles.btnPages}>
+          {Array(Number(lastPage) + 1)
+            .fill("")
+            .map((_, index) => {
+              return (
+                <button key={index} onClick={() => setPage(index + 1)}>
+                  {index + 1}
+                </button>
+              );
+            })}
+        </div>
       </div>
     </div>
   );

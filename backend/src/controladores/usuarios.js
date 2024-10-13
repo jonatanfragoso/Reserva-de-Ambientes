@@ -40,16 +40,22 @@ const login = async (req, res) => {
 
 const listarUsuarios = async (req, res) => {
   const { filtro } = req.query;
+  const { page } = req.query;
+  const offset = (page - 1) * 5;
+  const limit = 5;
+
   try {
     console.log(filtro);
     if (filtro) {
       const usuarios = await knex("usuarios")
         .where("nome", "ilike", `%${filtro}%`)
         .orWhere("email", "ilike", `%${filtro}%`)
-        .orWhere("matricula", "ilike", `%${filtro}%`);
+        .orWhere("matricula", "ilike", `%${filtro}%`)
+        .limit(limit)
+        .offset(offset);
       return res.status(200).json(usuarios);
     }
-    const usuarios = await knex("usuarios").debug();
+    const usuarios = await knex("usuarios").debug().limit(limit).offset(offset);
 
     return res.status(200).json(usuarios);
   } catch (error) {
@@ -125,11 +131,34 @@ const cadastrarUsuario = async (req, res) => {
   }
 };
 
+// Última página da listagem dpróximas aulas de cada professor ou Técnico
+const obterLastPageProximosEncontros = async (req, res) => {
+  const { authorization } = req.headers;
+  const token = authorization.split(" ")[1];
+  const { id } = jwt.verify(token, senhaJWT);
+  const hoje = moment().format("YYYY-MM-DD");
+  const limit = 7;
+  try {
+    const contador = await knex("agendamentos")
+      .where("id_usuario", id)
+      .andWhere("situacao", "<>", "Negado")
+      .andWhere("data_agendamento", ">=", hoje);
+    const lastPage = parseInt(contador.length / limit);
+    return res.status(200).json(lastPage);
+  } catch (error) {
+    console.log(error.message);
+    return res.status(500).json({ mensagem: "Erro interno do servidor." });
+  }
+};
+
 const listarProximosAgendamentos = async (req, res) => {
   const { authorization } = req.headers;
   const token = authorization.split(" ")[1];
   const { id } = jwt.verify(token, senhaJWT);
   const hoje = moment().format("YYYY-MM-DD");
+  const { page } = req.query;
+  const offset = (page - 1) * 7;
+  const limit = 7;
 
   try {
     const listaAgendamentos = await knex("agendamentos")
@@ -137,10 +166,28 @@ const listarProximosAgendamentos = async (req, res) => {
       .andWhere("situacao", "<>", "Negado")
       .andWhere("data_agendamento", ">=", hoje)
       .orderBy("data_agendamento")
-      .orderBy("hora_inicio");
+      .orderBy("hora_inicio")
+      .limit(limit)
+      .offset(offset);
 
     return res.status(200).json(listaAgendamentos);
   } catch (error) {
+    return res.status(500).json({ mensagem: "Erro interno do servidor." });
+  }
+};
+
+// Última página da listagem dpróximas aulas de cada professor ou Técnico
+const obterLastPageHistoricoAgendamentos = async (req, res) => {
+  const { authorization } = req.headers;
+  const token = authorization.split(" ")[1];
+  const { id } = jwt.verify(token, senhaJWT);
+  const limit = 7;
+  try {
+    const contador = await knex("agendamentos").where("id_usuario", id);
+    const lastPage = parseInt(contador.length / limit);
+    return res.status(200).json(lastPage);
+  } catch (error) {
+    console.log(error.message);
     return res.status(500).json({ mensagem: "Erro interno do servidor." });
   }
 };
@@ -149,13 +196,18 @@ const listarHistoricoAgendamentos = async (req, res) => {
   const { authorization } = req.headers;
   const token = authorization.split(" ")[1];
   const { id } = jwt.verify(token, senhaJWT);
+  const { page } = req.query;
+  const offset = (page - 1) * 7;
+  const limit = 7;
+
   //   const hoje = moment().format("YYYY-MM-DD");
 
   try {
     const listaAgendamentos = await knex("agendamentos")
       .where("id_usuario", id)
-      .orderBy("data_agendamento");
-
+      .orderBy("data_agendamento")
+      .limit(limit)
+      .offset(offset);
     return res.status(200).json(listaAgendamentos);
   } catch (error) {
     return res.status(500).json({ mensagem: "Erro interno do servidor." });
@@ -233,4 +285,6 @@ module.exports = {
   listarHistoricoAgendamentos,
   listarProximosAgendamentos,
   atualizarSenha,
+  obterLastPageProximosEncontros,
+  obterLastPageHistoricoAgendamentos,
 };

@@ -4,11 +4,11 @@ import styles from "./styles.module.scss";
 import { AgendamentoType } from "../../../types/AgendamentoType";
 import api from "../../../services/api";
 import Agendamentos from "../../../components/Agendamentos";
-import { set } from "date-fns";
+// import { set } from "date-fns";
 
 function MainGestor() {
   const { handleGetToken } = useAuth();
-  const [page, setPage] = useState("1");
+  const [page, setPage] = useState(1);
   const [lastPage, setLastPage] = useState("");
 
   const token = handleGetToken();

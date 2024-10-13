@@ -2,6 +2,20 @@ const knex = require("../conexao");
 const senhaJWT = require("../senhaJWT");
 const jwt = require("jsonwebtoken");
 
+// Última página da listagem de usuários (para edição)
+const obterLastPageUsuarios = async (req, res) => {
+  const limit = 5;
+  try {
+    const contador = await knex("usuarios");
+    const lastPage = parseInt(contador.length / limit);
+    return res.status(200).json(lastPage);
+  } catch (error) {
+    console.log(error.message);
+    return res.status(500).json({ mensagem: "Erro interno do servidor." });
+  }
+};
+
+// Última página da listagem de agendamentos pendentes
 const obterLastPage = async (req, res) => {
   const limit = 5;
   try {
@@ -297,4 +311,5 @@ module.exports = {
   obterPerfil,
   editarUsuarios,
   obterLastPage,
+  obterLastPageUsuarios,
 };
