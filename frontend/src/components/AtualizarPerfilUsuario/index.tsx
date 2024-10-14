@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import useAuth from "../../hooks/useAuth";
 import styles from "./styles.module.scss";
 import api from "../../services/api";
-import { useNavigate } from "react-router-dom";
+import { redirect, useNavigate } from "react-router-dom";
 import Modal from "react-modal";
 import { Bounce, toast } from "react-toastify";
 
@@ -40,12 +40,14 @@ function AtualizarPerfilUsuario() {
       if (!email || !nome || !telefone) {
         throw new Error("Todos os campos são obrigatórios.");
       }
-      await api.put("/atualizar-perfil", {
+      const response = await api.put("/atualizar-perfil", {
         nome: nome,
         email: email,
         telefone: telefone,
       });
-      navigate("/configuracoes");
+      navigate("/");
+      console.log(response.data.mensagem);
+
       return toast.success(response.data.mensagem, {
         position: "top-right",
         autoClose: 5000,
@@ -84,13 +86,35 @@ function AtualizarPerfilUsuario() {
 
   async function handleAtualizarSenha() {
     try {
-      await api.put("/atualizar-senha", {
+      const response = await api.put("/atualizar-senha", {
         senhaAtual: senhaAtual,
         novaSenha: novaSenha,
       });
+
       handleCloseModal();
+      return toast.success(response.data.mensagem, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
     } catch (error) {
-      console.log(error);
+      return toast.error(error.response.data.mensagem, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
     }
   }
 
@@ -145,7 +169,7 @@ function AtualizarPerfilUsuario() {
             overlayClassName={styles.modalOverlay}
             className={styles.modalContent}
           >
-            <h1>Altrar Senha</h1>
+            <h1>Alterar Senha</h1>
             <form>
               <p>Senha atual: </p>
               <input
@@ -161,7 +185,7 @@ function AtualizarPerfilUsuario() {
                 onChange={(e) => setNovaSenha(e.target.value)}
                 required
               />
-              <p>Repitir nova senha:</p>
+              <p>Repetir nova senha:</p>
               <input
                 type="password"
                 value={repetirSenha}

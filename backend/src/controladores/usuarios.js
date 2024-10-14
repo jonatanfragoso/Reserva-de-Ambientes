@@ -137,7 +137,7 @@ const obterLastPageProximosEncontros = async (req, res) => {
   const token = authorization.split(" ")[1];
   const { id } = jwt.verify(token, senhaJWT);
   const hoje = moment().format("YYYY-MM-DD");
-  const limit = 7;
+  const limit = 5;
   try {
     const contador = await knex("agendamentos")
       .where("id_usuario", id)
@@ -157,8 +157,8 @@ const listarProximosAgendamentos = async (req, res) => {
   const { id } = jwt.verify(token, senhaJWT);
   const hoje = moment().format("YYYY-MM-DD");
   const { page } = req.query;
-  const offset = (page - 1) * 7;
-  const limit = 7;
+  const offset = (page - 1) * 5;
+  const limit = 5;
 
   try {
     const listaAgendamentos = await knex("agendamentos")
@@ -181,7 +181,7 @@ const obterLastPageHistoricoAgendamentos = async (req, res) => {
   const { authorization } = req.headers;
   const token = authorization.split(" ")[1];
   const { id } = jwt.verify(token, senhaJWT);
-  const limit = 7;
+  const limit = 5;
   try {
     const contador = await knex("agendamentos").where("id_usuario", id);
     const lastPage = parseInt(contador.length / limit);
@@ -197,8 +197,8 @@ const listarHistoricoAgendamentos = async (req, res) => {
   const token = authorization.split(" ")[1];
   const { id } = jwt.verify(token, senhaJWT);
   const { page } = req.query;
-  const offset = (page - 1) * 7;
-  const limit = 7;
+  const offset = (page - 1) * 5;
+  const limit = 5;
 
   //   const hoje = moment().format("YYYY-MM-DD");
 
@@ -267,8 +267,7 @@ const atualizarPerfil = async (req, res) => {
       email: email,
       telefone: telefone,
     });
-
-    return res.status(201).json({ mensagem: "Atualizado com sucesso." });
+    return res.status(201).json({ mensagem: "Perfil atualizado com sucesso!" });
   } catch (error) {
     console.log(error.message);
     return res.status(500).json({ mensagem: "Erro interno do servidor." });
