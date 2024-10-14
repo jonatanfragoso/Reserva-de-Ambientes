@@ -62,3 +62,10 @@ create table "reservas" (
   foreign key (id_local) references locais (id)
 );
 
+insert into funcao (descricao)
+values ('Professor'),
+('Técnico');
+
+insert into gestor (descricao)
+values ('Gestor'),
+('Não-Gestor');
