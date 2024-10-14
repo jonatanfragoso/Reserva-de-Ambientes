@@ -57,13 +57,14 @@ function HeaderProfessor() {
             Histórico
           </NavLink>
         </div>
-
-        <div className={styles.navLinks}>
-          <FontAwesomeIcon icon={faChalkboard} />
-          {id_gestor === "1" && (
-            <NavLink to="main-gestor">Página Gestor</NavLink>
-          )}
-        </div>
+        {id_gestor === "1" && (
+          <div className={styles.navLinks}>
+            <FontAwesomeIcon icon={faChalkboard} />
+            {id_gestor === "1" && (
+              <NavLink to="main-gestor">Página Gestor</NavLink>
+            )}
+          </div>
+        )}
 
         <div className={styles.navLinks}>
           <FontAwesomeIcon icon={faGear} />

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import useAuth from "../../hooks/useAuth";
 import styles from "./styles.module.scss";
 import api from "../../services/api";
-import { redirect, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Modal from "react-modal";
 import { Bounce, toast } from "react-toastify";
 
