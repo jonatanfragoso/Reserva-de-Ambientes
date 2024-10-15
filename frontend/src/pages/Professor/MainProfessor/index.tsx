@@ -11,6 +11,7 @@ function MainProfessor() {
   const token = handleGetToken();
   const [page, setPage] = useState(1);
   const [lastPage, setLastPage] = useState("");
+  const [aux, setAux] = useState(0);
 
   const [agendamentosAceitos, setAgendamentosAceitos] = useState<
     AgendamentoProfessorType[]
@@ -29,6 +30,7 @@ function MainProfessor() {
       );
       setLastPage(`${ultimaPagina.data}`);
       setAgendamentosAceitos([...response.data]);
+      setAux(response.data.length);
     })();
   }, [page, lastPage]);
 
@@ -42,6 +44,16 @@ function MainProfessor() {
 
   console.log(dataAtual.isAfter(dataVencimento, "day")); // false
 
+  if (aux == 0) {
+    return (
+      <div className={styles.container}>
+        <div className={styles.divAgendamentos}>
+          <h1>Próximos Encontros</h1>
+          <h2>Não há reservas</h2>
+        </div>
+      </div>
+    );
+  }
   return (
     <div className={styles.container}>
       <div className={styles.divAgendamentos}>
