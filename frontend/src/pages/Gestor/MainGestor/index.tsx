@@ -10,6 +10,7 @@ function MainGestor() {
   const { handleGetToken } = useAuth();
   const [page, setPage] = useState(1);
   const [lastPage, setLastPage] = useState("");
+  const [aux, setAux] = useState(0);
 
   const token = handleGetToken();
   const [agendamentosAceitos, setAgendamentosAceitos] = useState<
@@ -27,8 +28,20 @@ function MainGestor() {
       const ultimaPagina = await api.get("/obter-ultima-pagina");
       setLastPage(`${ultimaPagina.data}`);
       setAgendamentosAceitos([...response.data]);
+      setAux(response.data.length);
     })();
   }, [page, lastPage]);
+
+  if (aux == 0) {
+    return (
+      <div className={styles.container}>
+        <div className={styles.divAgendamentos}>
+          <h1>Próximos Encontros</h1>
+          <h2>Não há solicitações</h2>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <>
