@@ -26,6 +26,9 @@ const reservarAmbiente = async (req, res) => {
   const dataFimQuebrada = new Date(
     `${dataQuebrada2[1]}/${dataQuebrada2[0]}/${dataQuebrada2[2]}`
   );
+  let date1 = new Date(
+    `${dataQuebrada[1]}/${dataQuebrada[0]}/${dataQuebrada[2]}`
+  );
 
   try {
     const nomeLocal = await knex("locais").where({ id: local }).first();
@@ -58,6 +61,15 @@ const reservarAmbiente = async (req, res) => {
 
     let dataBanco;
     let verificaChoqueHorarioNaMesmaData;
+
+    const dataCompare = minhaData.split("/");
+    const dataCompareFormatada = `${dataCompare[1]}/${dataCompare[0]}/${dataCompare[2]}`;
+
+    if (dataCompareFormatada < new Date()) {
+      return res.status(400).json({
+        mensagem: "A data selecionada não pode ser anterior a data atual.",
+      });
+    }
 
     // // CRIANDO VARIAVEIS PARA ARMAZENAR DADOS PARA IMPEDIR CONFLITOS DE HORARIOS
     // const hora_inicio_inteira = hora_inicio.split(":");

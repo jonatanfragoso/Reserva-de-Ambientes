@@ -7,10 +7,13 @@ import { Bounce, toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 import moment from "moment";
+import InputMask from "react-input-mask";
+import { subDays } from "date-fns";
 
 import { registerLocale, setDefaultLocale } from "react-datepicker";
 import ptBR from "date-fns/locale/pt-BR";
 import { LocaisType } from "../../types/LocaisType";
+import React from "react";
 registerLocale("pt-BR", ptBR);
 
 function SolicitarAgendamento() {
@@ -29,6 +32,20 @@ function SolicitarAgendamento() {
   const navigate = useNavigate();
   const { handleGetToken } = useAuth();
   const token = handleGetToken();
+
+  const MaskedInput = React.forwardRef(({ value, onChange, onClick }, ref) => (
+    <div className="ui input" onClick={onClick}>
+      <InputMask
+        ref={ref}
+        mask="99/99/9999"
+        value={value}
+        onChange={onChange}
+      />
+    </div>
+  ));
+
+  const currentDate = new Date();
+  const minDate = subDays(currentDate, 0);
 
   useEffect(() => {
     (async () => {
@@ -146,6 +163,8 @@ function SolicitarAgendamento() {
             locale="pt-BR"
             dateFormat="dd/MM/yyyy"
             onChange={(date) => handleDatasInicio(date)}
+            minDate={minDate}
+            customInput={<MaskedInput />}
           ></ReactDatePicker>
           <p>HORÁRIO: </p>
           <select
@@ -170,6 +189,8 @@ function SolicitarAgendamento() {
                 selected={startEndDate}
                 dateFormat="dd/MM/yyyy"
                 onChange={(date) => handleDatasFim(date)}
+                minDate={minDate}
+                customInput={<MaskedInput />}
               ></ReactDatePicker>
             </>
           )}
