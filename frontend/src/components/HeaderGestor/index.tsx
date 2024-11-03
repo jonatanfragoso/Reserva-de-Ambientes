@@ -11,6 +11,7 @@ import {
   faPlus,
   faUserPen,
   faArrowRightFromBracket,
+  faUsers,
 } from "@fortawesome/free-solid-svg-icons";
 function HeaderGestor() {
   const { handleLogout } = useAuth();
@@ -58,7 +59,7 @@ function HeaderGestor() {
           </NavLink>
         </div>
         <div className={styles.navLinks}>
-          <FontAwesomeIcon icon={faPlus} />
+          <FontAwesomeIcon icon={faUsers} />
           <NavLink
             to="/cadastrar-ambientes"
             style={({ isActive }) => {
