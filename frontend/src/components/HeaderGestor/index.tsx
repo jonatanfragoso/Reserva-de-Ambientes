@@ -10,8 +10,8 @@ import {
   faChalkboard,
   faPlus,
   faUserPen,
-  faArrowRightFromBracket,
   faUsers,
+  faArrowRightFromBracket,
 } from "@fortawesome/free-solid-svg-icons";
 function HeaderGestor() {
   const { handleLogout } = useAuth();
@@ -30,7 +30,7 @@ function HeaderGestor() {
             }}
           >
             Home
-          </NavLink>
+          {/* </NavLink>
         </div>
         <div className={styles.navLinks}>
           <FontAwesomeIcon icon={faPlus} />
@@ -42,11 +42,11 @@ function HeaderGestor() {
               };
             }}
           >
-            Cadastrar Usuários
+            Cadastrar Usuários */}
           </NavLink>
         </div>
         <div className={styles.navLinks}>
-          <FontAwesomeIcon icon={faUserPen} />
+          <FontAwesomeIcon icon={faUsers} />
           <NavLink
             to="/usuarios"
             style={({ isActive }) => {
@@ -55,11 +55,11 @@ function HeaderGestor() {
               };
             }}
           >
-            Editar Usuários
+            Usuários
           </NavLink>
         </div>
         <div className={styles.navLinks}>
-          <FontAwesomeIcon icon={faUsers} />
+          <FontAwesomeIcon icon={faPlus} />
           <NavLink
             to="/cadastrar-ambientes"
             style={({ isActive }) => {
