@@ -150,6 +150,10 @@ function SolicitarAgendamento() {
     }
   }
 
+  function handleCancel() {
+    navigate("/main-professor");
+  }
+
   return (
     <div className={styles.container}>
       <div className={styles.titulo}>
@@ -216,7 +220,9 @@ function SolicitarAgendamento() {
           <div>
             <div className={styles.divBotoes}>
               <button className={styles.btnVerde}>Solicitar</button>
-              {/* <button className={styles.btnVermelho}>Cancelar</button> */}
+              <button className={styles.btnVermelho} onClick={handleCancel}>
+                Cancelar
+              </button>
             </div>
           </div>
         </form>
