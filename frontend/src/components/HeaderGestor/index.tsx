@@ -30,7 +30,7 @@ function HeaderGestor() {
             }}
           >
             Home
-          {/* </NavLink>
+          </NavLink>
         </div>
         <div className={styles.navLinks}>
           <FontAwesomeIcon icon={faPlus} />
@@ -42,11 +42,11 @@ function HeaderGestor() {
               };
             }}
           >
-            Cadastrar Usuários */}
+            Cadastrar Usuários
           </NavLink>
         </div>
         <div className={styles.navLinks}>
-          <FontAwesomeIcon icon={faUsers} />
+          <FontAwesomeIcon icon={faUserPen} />
           <NavLink
             to="/usuarios"
             style={({ isActive }) => {
@@ -55,7 +55,7 @@ function HeaderGestor() {
               };
             }}
           >
-            Usuários
+            Editar Usuários
           </NavLink>
         </div>
         <div className={styles.navLinks}>
