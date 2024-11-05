@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGear } from "@fortawesome/free-solid-svg-icons";
 import { NavLink } from "react-router-dom";
 
-function NavBarSuperior() {
+function NavBarSuperiorGestor() {
   const { handleGetToken } = useAuth();
   const token = handleGetToken();
   const [nome, setNome] = useState("");
@@ -22,11 +22,11 @@ function NavBarSuperior() {
   return (
     <header className={styles.navbarSuperior}>
       <p>Olá, {nome}!</p>
-      <NavLink to="/meu-perfil">
+      <NavLink to="/meu-perfil-gestor">
         <FontAwesomeIcon className={styles.engrenagem} icon={faGear} />
       </NavLink>
     </header>
   );
 }
 
-export default NavBarSuperior;
+export default NavBarSuperiorGestor;

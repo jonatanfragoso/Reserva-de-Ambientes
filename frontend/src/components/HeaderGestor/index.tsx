@@ -75,7 +75,7 @@ function HeaderGestor() {
           <FontAwesomeIcon icon={faChalkboard} />
           <NavLink to="/main-professor">Página do Professor</NavLink>
         </div>
-        <div className={styles.navLinks}>
+        {/* <div className={styles.navLinks}>
           <FontAwesomeIcon icon={faGear} />
           <NavLink
             to="/meu-perfil-gestor"
@@ -87,7 +87,7 @@ function HeaderGestor() {
           >
             Configurações
           </NavLink>
-        </div>
+        </div> */}
         <div className={styles.navLinks}>
           <FontAwesomeIcon icon={faArrowRightFromBracket} />
           <Link to="/" onClick={handleLogout}>

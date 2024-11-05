@@ -66,7 +66,7 @@ function HeaderProfessor() {
           </div>
         )}
 
-        <div className={styles.navLinks}>
+        {/* <div className={styles.navLinks}>
           <FontAwesomeIcon icon={faGear} />
           <NavLink
             to="/meu-perfil"
@@ -78,7 +78,7 @@ function HeaderProfessor() {
           >
             Configurações
           </NavLink>
-        </div>
+        </div> */}
         <div className={styles.navLinks}>
           <FontAwesomeIcon icon={faArrowRightFromBracket} />
           <Link to="/" onClick={handleLogout}>
